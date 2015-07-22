@@ -2,6 +2,7 @@
 #dummy = 0, noisy = -1, real = 1
 
 import math
+import random
 
 class Tree:
     
@@ -39,9 +40,12 @@ class Tree:
             
         return result
     
+    def getBucket(self, bucketID): #subtracts 1 because arrays go up from 0
+        return self._buckets[bucketID - 1]
+    
     def merge(self, bucket1, bucket2): #aligns buckets pseudo-randomly for merging and merges them
         
-        #Assumes that bucket1 is random (or what we have determined to be that random etc)
+        #Assumes that both buckets are pseudo-random
         
         zeroes1 = []
         noisys1 = []
@@ -65,10 +69,51 @@ class Tree:
             
             if(bucket2[i] == -1):
                 nCount2 += 1
-                
+        
+        assert ((rCount2 + nCount2 <= nCount1 + zCount1) and (rCount2 < zCount1)), "BUCKET OVERFLOW ERROR"        
                 
         #assign reals spaces among zeroes
         #assign noisys spaces among noisys (and zeroes if insufficient space)
+        
+        r2map = self.AssignFromList(rCount2, zeroes1) #this and below 2 lines handle output from assignment function
+        zeroes1 = r2map[1] #now only the empty locations
+        r2map = r2map[0]
+        
+        if nCount2 > nCount1:
+            ndiff = nCount2 - nCount1
+            
+            n2map = noisys1
+            n2map += self.AssignFromList(ndiff, zeroes1)[0]
+            
+        else:
+            n2map = self.AssignFromList(nCount2, noisys1)[0]
+        
+        
+        #below lines are for testing only, obviously need to be fixed for real data   
+        for i in range(len(r2map)): #assign reals
+            bucket1[r2map[i]] = 1
+        for i in range(len(n2map)):
+            bucket1[n2map[i]] = -1
+            
+        return bucket1
+        
+            
+            
+    def AssignFromList(self, objnum, locs): #randomly assigns objects locations from specified list
+        
+        assert(objnum <= len(locs)), "Pigeon-hole Principle Violation"
+        
+        mapping = []
+        
+        for i in range(objnum):
+            
+            newloc = locs[random.randint(0,len(locs) - 1)]
+            mapping.append(newloc)
+            locs.remove(newloc)
+        
+        
+        return [mapping, locs]
+    
         
         
         
