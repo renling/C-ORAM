@@ -29,7 +29,7 @@ class Tree:
         #print ("will return %d" %resp)
         return resp
     
-    def getPathNodes(leaf): #returns all buckets along the path to a specified leaf
+    def getPathNodes(self, leaf): #returns all buckets along the path to a specified leaf
         
         result = []
         
@@ -38,3 +38,37 @@ class Tree:
             leaf = leaf >> 1
             
         return result
+    
+    def merge(self, bucket1, bucket2): #aligns buckets pseudo-randomly for merging and merges them
+        
+        #Assumes that bucket1 is random (or what we have determined to be that random etc)
+        
+        zeroes1 = []
+        noisys1 = []
+        zCount1 = 0
+        nCount1 = 0
+        rCount2 = 0
+        nCount2 = 0
+        
+        for i in range(len(bucket1)): #gathers metadata
+            
+            if(bucket1[i] == 0):
+                zeroes1.append(i)
+                zCount1 += 1
+                
+            if(bucket1[i] == -1):
+                noisys1.append(i)
+                nCount1 += 1
+                
+            if(bucket2[i] == 1):
+                rCount2 += 1
+            
+            if(bucket2[i] == -1):
+                nCount2 += 1
+                
+                
+        #assign reals spaces among zeroes
+        #assign noisys spaces among noisys (and zeroes if insufficient space)
+        
+        
+        
