@@ -97,7 +97,10 @@ class Tree:
             
         return bucket1
         
-            
+           
+    def insertData(self, data):
+        
+    
             
     def AssignFromList(self, objnum, locs): #randomly assigns objects locations from specified list
         
