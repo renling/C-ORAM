@@ -6,6 +6,7 @@ class TreeNode:
 	def __init__(self):
 		self._left=None
 		self._right=None
+		self._data = []
 
 	def getLeft(self, node):
 		return node._left;
@@ -14,4 +15,5 @@ class TreeNode:
 		return node._right;
 
 
-	def merge
+	def pushdown(self): #pushes contents to children
+		

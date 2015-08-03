@@ -96,6 +96,8 @@ class Tree:
             bucket1[n2map[i]] = -1
             
         return bucket1
+
+    def mergeNodes(node1, node2): #merge functions using the TreeNode representation
         
     """     
     def eviction(self):
