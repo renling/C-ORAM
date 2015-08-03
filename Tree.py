@@ -97,9 +97,12 @@ class Tree:
             
         return bucket1
         
-           
-    def insertData(self, data):
-        
+    """     
+    def eviction(self):
+        nextLeaf = RLOLeaf()
+        leaves=getPathNodes(nextLeaf)
+
+    """   
     
             
     def AssignFromList(self, objnum, locs): #randomly assigns objects locations from specified list
