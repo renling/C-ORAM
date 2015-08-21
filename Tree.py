@@ -105,6 +105,11 @@ class Tree:
             
         return bucket1
 
+    def mergeNodes(node1, node2): #merge functions using the TreeNode representation
+        newnode = merge(node1, node2)
+        #update/account for noisy blocks
+        
+        return newnode
 
          
     def eviction(self):
@@ -124,6 +129,7 @@ class Tree:
 
       
      
+
 
     def mergeNodes(node1, node2): #merge functions using the TreeNode representation
         newnode = merge(node1, node2)
