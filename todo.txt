@@ -1,0 +1,9 @@
+functionality -test for no loss of data
+
+scale up - use larger tree size - 20 levels about
+
+test for bucket size, eviction frequency
+
+revisit merge function - random number generation
+
+beware of cache threshing

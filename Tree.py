@@ -112,8 +112,8 @@ class Tree:
         return newnode
 
          
-    def eviction(self):
-        
+    def eviction(self,input): #initial
+        self.setBucket(1, input)
         nextLeaf = RLOLeaf()
         leaves=getPathNodes(nextLeaf)
         for i in range(len(leaves)):
@@ -128,7 +128,7 @@ class Tree:
 
 
       
-     
+        return
 
 
     def mergeNodes(node1, node2): #merge functions using the TreeNode representation
@@ -178,7 +178,7 @@ class Tree:
         
         return
     
-    def evictAll(self, input):
+    def evictAll(self, input): 
         self.setBucket(1, input)
         
         evictees = getPathNodes(self.RLOLeaf())
@@ -186,6 +186,7 @@ class Tree:
         for node in evictees:
             self.evictToKids(node)
             
+        #clean up leaf
         return
     
     def getPathNodes(leaf):

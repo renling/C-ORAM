@@ -33,7 +33,7 @@ def testMerge(testnum):
     numpassed = 0
     passed = True
     
-    for i in range(testnum):
+    for i in range(testnum): #revisit random number generator
         
         rrand1 = random.randint(0, maxR)
         nrand1 = random.randint(0, maxN)
@@ -77,6 +77,8 @@ def testMerge(testnum):
 def testEvict():
     ORAMsize = (1 << 7) - 1
     # fill in once we have some more structure
+
+
 
 def countTypes(bucket): #returns counts of [real, noisy, zero]
     
