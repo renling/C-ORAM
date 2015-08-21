@@ -43,6 +43,14 @@ class Tree:
     def getBucket(self, bucketID): #subtracts 1 because arrays go up from 0
         return self._buckets[bucketID - 1]
     
+    def clearBucket(self, bucketID):
+        self._buckets[bucketID - 1] = [0 for i in range(self._z)]
+        return
+        
+    def setBucket(self, bucketID, contents):
+        self._buckets[bucketID - 1] = contents
+        return
+    
     def merge(self, bucket1, bucket2): #aligns buckets pseudo-randomly for merging and merges them
         
         #Assumes that both buckets are pseudo-random
@@ -97,15 +105,32 @@ class Tree:
             
         return bucket1
 
-    def mergeNodes(node1, node2): #merge functions using the TreeNode representation
-        
-    """     
+
+         
     def eviction(self):
+        
         nextLeaf = RLOLeaf()
         leaves=getPathNodes(nextLeaf)
+        for i in range(len(leaves)):
 
-    """   
-    
+            curBucket=leaves[i]
+            getBucket(2*(i+1))=merge(leaves[i],getBucket(2*(i+1)))
+            getBucket(2*(i+1)+1=merge(leaves[i],getBucket(2*(i+1)+1))
+
+            for j in range(len(curBucket):
+                curBucket[j]=0
+
+
+
+      
+     
+
+    def mergeNodes(node1, node2): #merge functions using the TreeNode representation
+        newnode = merge(node1, node2)
+        #update/account for noisy blocks
+        
+        return newnode
+
             
     def AssignFromList(self, objnum, locs): #randomly assigns objects locations from specified list
         
@@ -122,6 +147,51 @@ class Tree:
         
         return [mapping, locs]
     
+    def levelNumber(self, bucket):#returns the level a leaf is on (used in getMaxLevel)
+        a = int(math.log(bucket,2))
+        if(leaf == 2**a):
+            return a
+        return a
+    
+    def children(self, bucketID): 
+        assert(levelNumber(bucketID) < self._height - 1), "Leaves have no children"
+        
+        return [2 * bucketID, 2 * bucketID + 1] #IDs of children
+    
+    def evictToKids(self, bucketID):
+        
+        kids = children(bucketID)
+        
+        kidContents = [mergeNodes(self.getBucket(kids[0]),self.getBucket(bucketID)), 
+                mergeNodes(self.getBucket(kids[1]),self.getBucket(bucketID))]
+        
+        self.clearBucket(BucketID)
+        
+        self.setBucket(kids[0], kidContents[0])
+        self.setBucket(kids[1], kidContents[1])
+        
+        return
+    
+    def evictAll(self, input):
+        self.setBucket(1, input)
+        
+        evictees = getPathNodes(self.RLOLeaf())
+        
+        for node in evictees:
+            self.evictToKids(node)
+            
+        return
+    
+    def getPathNodes(leaf):
+        result = []
+        leaf = leaf >> 1 #the leaf itself is NOT in the returned list
+        while (leaf>0):
+            result.insert(0,leaf)
+            leaf = leaf>>1
+        return result
+        
+        
+        
         
         
         

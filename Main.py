@@ -48,7 +48,7 @@ def testMerge(testnum):
         b2 += [0 for j in range(z - rrand2 - nrand2)]
         
         
-        print("Testing " + str(i) + " of " + str(testnum))
+        print("Testing " + str(i + 1) + " of " + str(testnum))
         print(b1)
         print(b2)
         res = t.merge(b1, b2)
@@ -73,6 +73,10 @@ def testMerge(testnum):
     
     else:
         print("Test Merge FAILED! (" + str(numpassed) + " of " + str(testnum) + " passed)")
+        
+def testEvict():
+    ORAMsize = (1 << 7) - 1
+    # fill in once we have some more structure
 
 def countTypes(bucket): #returns counts of [real, noisy, zero]
     
