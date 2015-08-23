@@ -1,7 +1,7 @@
 from Tree import Tree
 import math
 import random
-
+import time
 
 def testRLO(): #tests that RLO is working by generating all RLO values
     ORAMsize = (1 << 7) - 1
@@ -19,6 +19,9 @@ def testRLO(): #tests that RLO is working by generating all RLO values
     leaves.sort()
     
     print(leaves)
+def counter():
+    Tree.seed = Tree.seed + 1
+    return Tree.seed
 
 def testMerge(testnum):
     ORAMsize = (1 << 7) - 1
@@ -31,29 +34,31 @@ def testMerge(testnum):
     t = Tree(ORAMsize, z)
     
     numpassed = 0
-    passed = True
+
+    start = time.clock()
     
     for i in range(testnum):
-        
+        passed = True
         rrand1 = random.randint(0, maxR)
         nrand1 = random.randint(0, maxN)
         rrand2 = random.randint(0, maxR)
         nrand2 = random.randint(0, maxN)
         
         b1 = [-1 for j in range(nrand1)] 
-        b1 += [1 for j in range(rrand1)]
+        b1 += [counter() for j in range(rrand1)]
         b1 += [0 for j in range(z - rrand1 - nrand1)]
         b2 = [-1 for j in range(nrand2)] 
-        b2 += [1 for j in range(rrand2)]
+        b2 += [counter() for j in range(rrand2)]
         b2 += [0 for j in range(z - rrand2 - nrand2)]
         
         
         print("Testing " + str(i + 1) + " of " + str(testnum))
-        print(b1)
-        print(b2)
+        temp = b1
+        #print(b1)
+        #print(b2)
         res = t.merge(b1, b2)
-        print(res)
-        print("")
+        #print(res)
+        #print("")
         
         conts = countTypes(res)
         
@@ -67,12 +72,21 @@ def testMerge(testnum):
         
         if(passed != False):
             numpassed += 1
-        
+        else:
+            print(temp)
+            print(b2)
+            print(res)
+            
+    timetaken = time.clock() - start       
+         
     if(numpassed == testnum):
         print("Test Merge PASSED!")
     
     else:
         print("Test Merge FAILED! (" + str(numpassed) + " of " + str(testnum) + " passed)")
+    
+    print("Took %.2f seconds" % timetaken)
+    
         
 def testEvict():
     ORAMsize = (1 << 7) - 1
@@ -92,10 +106,10 @@ def countTypes(bucket): #returns counts of [real, noisy, zero]
         if(bucket[i] == -1):
             nCount += 1
             
-        if(bucket[i] == 1):
+        if(bucket[i] >= 1):
             rCount += 1
             
     return [rCount, nCount, zCount]
 
 
-testMerge(100)
+testMerge(10000)

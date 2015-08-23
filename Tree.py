@@ -6,6 +6,8 @@ import random
 
 class Tree:
     
+    seed = 0 #for block contents
+    
     def __init__(self, nodeNumber, z): #creates the tree
         
         assert (nodeNumber % 2 == 1), "tree must have odd number of buckets"
@@ -57,6 +59,7 @@ class Tree:
         
         zeroes1 = []
         noisys1 = []
+        real2 = []
         zCount1 = 0
         nCount1 = 0
         rCount2 = 0
@@ -64,18 +67,19 @@ class Tree:
         
         for i in range(len(bucket1)): #gathers metadata
             
-            if(bucket1[i] == 0):
+            if(bucket1[i] == 0): #dummy
                 zeroes1.append(i)
                 zCount1 += 1
                 
-            if(bucket1[i] == -1):
+            if(bucket1[i] == -1): #noisy
                 noisys1.append(i)
                 nCount1 += 1
                 
-            if(bucket2[i] == 1):
+            if(bucket2[i] >= 1): #real
+                real2.append(bucket2[i])
                 rCount2 += 1
             
-            if(bucket2[i] == -1):
+            if(bucket2[i] == -1): #noisy
                 nCount2 += 1
         
         assert ((rCount2 + nCount2 <= nCount1 + zCount1) and (rCount2 < zCount1)), "BUCKET OVERFLOW ERROR"        
@@ -84,6 +88,7 @@ class Tree:
         #assign noisys spaces among noisys (and zeroes if insufficient space)
         
         r2map = self.AssignFromList(rCount2, zeroes1) #this and below 2 lines handle output from assignment function
+        #print('r2map is' + str(r2map))
         zeroes1 = r2map[1] #now only the empty locations
         r2map = r2map[0]
         
@@ -96,10 +101,9 @@ class Tree:
         else:
             n2map = self.AssignFromList(nCount2, noisys1)[0]
         
-        
-        #below lines are for testing only, obviously need to be fixed for real data   
+
         for i in range(len(r2map)): #assign reals
-            bucket1[r2map[i]] = 1
+            bucket1[r2map[i]] = real2[i]
         for i in range(len(n2map)):
             bucket1[n2map[i]] = -1
             
@@ -115,14 +119,22 @@ class Tree:
         
         assert(objnum <= len(locs)), "Pigeon-hole Principle Violation"
         
+        #print(str(locs) + ',  ' + str(objnum))
+        
+        
+        rands = random.sample(xrange(0, len(locs)), objnum)
+        #print( 'rands are ' + str(rands))
         mapping = []
         
-        for i in range(objnum):
+        for i in range(len(rands)):
             
-            newloc = locs[random.randint(0,len(locs) - 1)]
-            mapping.append(newloc)
-            locs.remove(newloc)
+            mapping.append(locs[rands[i]])
         
+        for i in range(len(mapping)):
+            locs.remove(mapping[i])
+            
+        #print(locs)
+        #print('mapping is ' + str(mapping))
         
         return [mapping, locs]
     
