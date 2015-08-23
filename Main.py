@@ -52,7 +52,7 @@ def testMerge(testnum):
         b2 += [0 for j in range(z - rrand2 - nrand2)]
         
         
-        print("Testing " + str(i + 1) + " of " + str(testnum))
+        #print("Testing " + str(i + 1) + " of " + str(testnum))
         temp = b1
         #print(b1)
         #print(b2)
@@ -90,6 +90,38 @@ def testMerge(testnum):
         
 def testEvict():
     ORAMsize = (1 << 7) - 1
+    z = 5000
+    t = Tree(ORAMsize, z)
+    exp = 500
+    
+    input = [t.randomLeaf() for i in range(exp)]
+    
+    start = time.clock()
+    
+    t.evictAll(input)
+    for i in range(ORAMsize):
+        print("Eviction " + str(i) + " of " + str(ORAMsize))
+        t.evictAll([0 for i in range(z)])
+    
+    timetaken = time.clock() - start
+    
+    reals = 0
+    safety = 0
+    
+    for leaf in range(ORAMsize):
+        safety = safety + countTypes(t.getBucket(leaf))[0]
+        
+    for leaf in t._leaves:
+        reals = reals + countTypes(t.getBucket(leaf))[0]
+
+    
+    print(str(reals) + '/' + str(exp) + ' found')
+    if reals == exp and reals == safety:
+        print("TEST EVICTION PASSED")
+    else:
+        print("TEST EVICTION FAILED")
+    
+    print("Took %.2f seconds" % timetaken)
     # fill in once we have some more structure
 
 def countTypes(bucket): #returns counts of [real, noisy, zero]
@@ -112,4 +144,5 @@ def countTypes(bucket): #returns counts of [real, noisy, zero]
     return [rCount, nCount, zCount]
 
 
-testMerge(10000)
+#testMerge(10000)
+testEvict()

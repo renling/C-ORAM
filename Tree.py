@@ -18,6 +18,9 @@ class Tree:
         self._size = nodeNumber
         self._height = int(math.log(self._size+1,2))
         self._numAccesses = 0
+        
+        self._leaves = [i for i in range(2 ** (self._height - 1), 2 ** self._height)] 
+            #leaf locations
     
     def RLOLeaf(self): #returns next Reverse Lexicographic Leaf
 
@@ -31,6 +34,9 @@ class Tree:
         resp = self._size -(int(binary,2))
         #print ("will return %d" %resp)
         return resp
+    
+    def randomLeaf(self):
+        return random.randint(int(self._size / 2) + 1, self._size)
     
     def getPathNodes(self, leaf): #returns all buckets along the path to a specified leaf
         
@@ -51,6 +57,7 @@ class Tree:
         
     def setBucket(self, bucketID, contents):
         self._buckets[bucketID - 1] = contents
+        self._buckets[bucketID - 1] += [0 for i in range(self._z - len(self._buckets[bucketID - 1]))]
         return
     
     def merge(self, bucket1, bucket2): #aligns buckets pseudo-randomly for merging and merges them
@@ -106,11 +113,11 @@ class Tree:
             bucket1[r2map[i]] = real2[i]
         for i in range(len(n2map)):
             bucket1[n2map[i]] = -1
-            
+        
         return bucket1
 
-    def mergeNodes(node1, node2): #merge functions using the TreeNode representation
-        newnode = merge(node1, node2)
+    def mergeNodes(self, node1, node2): #merge functions using the TreeNode representation
+        newnode = self.merge(node1, node2)
         #update/account for noisy blocks
         
         return newnode
@@ -139,48 +146,75 @@ class Tree:
         return [mapping, locs]
     
     def levelNumber(self, bucket):#returns the level a leaf is on (used in getMaxLevel)
+        #print bucket
         a = int(math.log(bucket,2))
-        if(leaf == 2**a):
-            return a
+
         return a
     
     def children(self, bucketID): 
-        assert(levelNumber(bucketID) < self._height - 1), "Leaves have no children"
+        assert(self.levelNumber(bucketID) < self._height - 1), "Leaves have no children"
         
         return [2 * bucketID, 2 * bucketID + 1] #IDs of children
     
     def evictToKids(self, bucketID):
         
-        kids = children(bucketID)
+        kids = self.children(bucketID)
         
-        kidContents = [mergeNodes(self.getBucket(kids[0]),self.getBucket(bucketID)), 
-                mergeNodes(self.getBucket(kids[1]),self.getBucket(bucketID))]
+        kidContents = [self.mergeNodes(self.getBucket(kids[0]),self.getBucket(bucketID)), 
+                self.mergeNodes(self.getBucket(kids[1]),self.getBucket(bucketID))]
         
-        self.clearBucket(BucketID)
+        self.clearBucket(bucketID)
         
+        kidContents[0] = self.makeNoisy(kidContents[0], kids[0])
+        kidContents[1] = self.makeNoisy(kidContents[1], kids[1])
+        
+        
+        #print(kidContents)
         self.setBucket(kids[0], kidContents[0])
         self.setBucket(kids[1], kidContents[1])
         
         return
     
+    def makeNoisy(self, bucket, bucketID):
+        for i in range(len(bucket)):
+            if bucket[i] >= 1:
+                if self.getMaxLevel(bucket[i], bucketID) < self.levelNumber(bucketID):
+                    bucket[i] = -1 #now it's noisy!
+        
+        return bucket
+        
     def evictAll(self, input):
+        input = input + [0 for i in range(self._z - len(input))]
         self.setBucket(1, input)
         
-        evictees = getPathNodes(self.RLOLeaf())
+        evictees = self.getPathNodes(self.RLOLeaf())
         
         for node in evictees:
             self.evictToKids(node)
             
         return
     
-    def getPathNodes(leaf):
+    def getPathNodes(self, leaf):
         result = []
         leaf = leaf >> 1 #the leaf itself is NOT in the returned list
         while (leaf>0):
             result.insert(0,leaf)
             leaf = leaf>>1
         return result
+    
+    def getMaxLevel(self, leaf1, leaf2):
+    #print (str(leaf1) + " and " + str(leaf2))
+        if leaf1 == 1 or leaf2 == 1:
+            return 0
         
+        if self.levelNumber(leaf1) > self.levelNumber(leaf2):
+            return self.levelNumber(leaf1)
+            leaf1 = leaf1 >> 1
+        elif self.levelNumber(leaf1) < self.levelNumber(leaf2):
+            return self.levelNumber(leaf2)
+            leaf2 = leaf2>>1
+        if leaf1==leaf2:
+            return self.levelNumber(leaf1);
         
         
         
