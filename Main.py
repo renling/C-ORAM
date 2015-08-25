@@ -1,7 +1,7 @@
 from Tree import Tree
 import math
 import random
-
+import time
 
 def testRLO(): #tests that RLO is working by generating all RLO values
     ORAMsize = (1 << 7) - 1
@@ -19,6 +19,9 @@ def testRLO(): #tests that RLO is working by generating all RLO values
     leaves.sort()
     
     print(leaves)
+def counter():
+    Tree.seed = Tree.seed + 1
+    return Tree.seed
 
 def testMerge(testnum):
     ORAMsize = (1 << 7) - 1
@@ -31,29 +34,33 @@ def testMerge(testnum):
     t = Tree(ORAMsize, z)
     
     numpassed = 0
-    passed = True
+
+    start = time.clock()
     
-    for i in range(testnum): #revisit random number generator
-        
+
+    for i in range(testnum):
+        passed = True
+        origin/master
         rrand1 = random.randint(0, maxR)
         nrand1 = random.randint(0, maxN)
         rrand2 = random.randint(0, maxR)
         nrand2 = random.randint(0, maxN)
         
         b1 = [-1 for j in range(nrand1)] 
-        b1 += [1 for j in range(rrand1)]
+        b1 += [counter() for j in range(rrand1)]
         b1 += [0 for j in range(z - rrand1 - nrand1)]
         b2 = [-1 for j in range(nrand2)] 
-        b2 += [1 for j in range(rrand2)]
+        b2 += [counter() for j in range(rrand2)]
         b2 += [0 for j in range(z - rrand2 - nrand2)]
         
         
-        print("Testing " + str(i + 1) + " of " + str(testnum))
-        print(b1)
-        print(b2)
+        #print("Testing " + str(i + 1) + " of " + str(testnum))
+        temp = b1
+        #print(b1)
+        #print(b2)
         res = t.merge(b1, b2)
-        print(res)
-        print("")
+        #print(res)
+        #print("")
         
         conts = countTypes(res)
         
@@ -67,16 +74,58 @@ def testMerge(testnum):
         
         if(passed != False):
             numpassed += 1
-        
+        else:
+            print(temp)
+            print(b2)
+            print(res)
+            
+    timetaken = time.clock() - start       
+         
     if(numpassed == testnum):
         print("Test Merge PASSED!")
     
     else:
         print("Test Merge FAILED! (" + str(numpassed) + " of " + str(testnum) + " passed)")
+    
+    print("Took %.2f seconds" % timetaken)
+    
         
 def testEvict():
     ORAMsize = (1 << 7) - 1
+    z = 5000
+    t = Tree(ORAMsize, z)
+    exp = 500
+    
+    input = [t.randomLeaf() for i in range(exp)]
+    
+    start = time.clock()
+    
+    t.evictAll(input)
+    for i in range(ORAMsize):
+        print("Eviction " + str(i) + " of " + str(ORAMsize))
+        t.evictAll([0 for i in range(z)])
+    
+    timetaken = time.clock() - start
+    
+    reals = 0
+    safety = 0
+    
+    for leaf in range(ORAMsize):
+        safety = safety + countTypes(t.getBucket(leaf))[0]
+        
+    for leaf in t._leaves:
+        reals = reals + countTypes(t.getBucket(leaf))[0]
+
+    
+    print(str(reals) + '/' + str(exp) + ' found')
+    if reals == exp and reals == safety:
+        print("TEST EVICTION PASSED")
+    else:
+        print("TEST EVICTION FAILED")
+    
+    print("Took %.2f seconds" % timetaken)
     # fill in once we have some more structure
+    #commit?
 
 
 
@@ -94,10 +143,11 @@ def countTypes(bucket): #returns counts of [real, noisy, zero]
         if(bucket[i] == -1):
             nCount += 1
             
-        if(bucket[i] == 1):
+        if(bucket[i] >= 1):
             rCount += 1
             
     return [rCount, nCount, zCount]
 
 
-testMerge(100)
+#testMerge(10000)
+testEvict()
