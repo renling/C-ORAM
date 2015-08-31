@@ -40,7 +40,7 @@ def testMerge(testnum):
 
     for i in range(testnum):
         passed = True
-        origin/master
+       
         rrand1 = random.randint(0, maxR)
         nrand1 = random.randint(0, maxN)
         rrand2 = random.randint(0, maxR)

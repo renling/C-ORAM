@@ -123,23 +123,23 @@ class Tree:
         return newnode
 
          
-    def eviction(self,input): #initial
-        self.setBucket(1, input)
-        nextLeaf = RLOLeaf()
-        leaves=getPathNodes(nextLeaf)
-        for i in range(len(leaves)):
+    # def eviction(self,input): #initial
+    #     self.setBucket(1, input)
+    #     nextLeaf = RLOLeaf()
+    #     leaves=getPathNodes(nextLeaf)
+    #     for i in range(len(leaves)):
 
-            curBucket=leaves[i]
-            getBucket(2*(i+1))=merge(leaves[i],getBucket(2*(i+1)))
-            getBucket(2*(i+1)+1=merge(leaves[i],getBucket(2*(i+1)+1))
+    #         curBucket=leaves[i]
+    #         getBucket(2*(i+1))=merge(leaves[i],getBucket(2*(i+1)))
+    #         getBucket(2*(i+1)+1=merge(leaves[i],getBucket(2*(i+1)+1))
 
-            for j in range(len(curBucket):
-                curBucket[j]=0
+    #         for j in range(len(curBucket)):
+    #             curBucket[j]=0
 
 
 
       
-        return
+    #     return
 
 
     def mergeNodes(node1, node2): #merge functions using the TreeNode representation
