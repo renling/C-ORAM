@@ -142,12 +142,6 @@ class Tree:
     #     return
 
 
-    def mergeNodes(node1, node2): #merge functions using the TreeNode representation
-        newnode = merge(node1, node2)
-        #update/account for noisy blocks
-        
-        return newnode
-
             
     def AssignFromList(self, objnum, locs): #randomly assigns objects locations from specified list
         
@@ -216,13 +210,23 @@ class Tree:
 
         self.setBucket(1, input)
         
-        evictees = self.getPathNodes(self.RLOLeaf())
+        rlo = self.RLOLeaf()
+        
+        evictees = self.getPathNodes(rlo)
         
         for node in evictees:
             self.evictToKids(node)
-            
+        
+        self.cleanBucket(rlo)
+        
         #clean up leaf
         return
+    
+    def cleanBucket(self, bucketID):
+        for i in range(self._z):
+            if self._buckets[bucketID - 1][i] == -1:
+                self._buckets[bucketID - 1][i] = 0
+        
     
     def getPathNodes(self, leaf):
         result = []
