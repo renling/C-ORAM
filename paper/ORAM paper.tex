@@ -13,7 +13,7 @@
 
 
 \title{ORAM paper}
-\author{Akiva Gordon, Krishna Suraj}
+\author{Akiva Gordon, Krishna Suraj, Ling Ren}
 %\date{}							% Activate to display a given date or no date
 
 \begin{document}
@@ -52,6 +52,8 @@ To access an element in C-ORAM, i.e., read or write, the client first fetches th
 Elements in each bucket are encrypted using additively homomorphic encryption, respectively. Given two buckets B1 and B2, oblivious merging will permute the position of blocks in B1 such that there are no real or noisy element at the same positions in B1 and B2. Consequently, if there is a real element in the ith position in B1, then for the scheme to be correct, the ith position in B2 should be empty. The following addition of elements at the same position in B1 and B2 will preserve the value of the real element. After ? operations, we also download the leaf bucket to delete its noisy blocks.
 
 \section{Our Contributions}
+
+In our project, we created a simplified C-ORAM protocol (eliminating the encryption for testing purposes). 
 
 
 \end{document}  
