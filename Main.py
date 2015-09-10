@@ -91,12 +91,14 @@ def testMerge(testnum):
     
         
 def testEvict():
-    ORAMsize = (1 << 7) - 1
-    z = 5000
+    ORAMsize = (1 << 4) - 1
+    z = 10
     t = Tree(ORAMsize, z)
-    exp = 500
+    exp = 5
     
-    input = [t.randomLeaf() for i in range(exp)]
+    leaves = t._leaves
+    
+    input = random.sample(leaves, exp)
     
     start = time.clock()
     
@@ -124,10 +126,43 @@ def testEvict():
         print("TEST EVICTION FAILED")
     
     print("Took %.2f seconds" % timetaken)
+    
+    #print(t._buckets)
     # fill in once we have some more structure
     #commit?
 
-
+def timeEvict():
+    ORAMsize = (1 << 15) - 1
+    z = 20000
+    
+    start = time.clock()
+    
+    t = Tree(ORAMsize, z)
+    
+    timetaken = time.clock() - start
+    print("Took %.2f seconds to create tree" % (timetaken))
+    
+    exp = 50
+    
+    leaves = t._leaves
+    
+    input = random.sample(leaves, exp)
+    
+    num = 400 #number of tests to average
+    
+    for i in range(num/10):
+        start = time.clock()
+        
+        for i in range(10):
+            input = random.sample(leaves, exp)
+            t.evictAll(input)
+            #print(t._buckets)
+        
+        timetaken = time.clock() - start
+        
+        print("Averaged %.2f seconds" % (timetaken/10))
+    
+        
 
 def countTypes(bucket): #returns counts of [real, noisy, zero]
     
@@ -150,4 +185,4 @@ def countTypes(bucket): #returns counts of [real, noisy, zero]
 
 
 #testMerge(10000)
-testEvict()
+timeEvict()

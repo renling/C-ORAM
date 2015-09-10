@@ -89,7 +89,7 @@ class Tree:
             if(bucket2[i] == -1): #noisy
                 nCount2 += 1
         
-        assert ((rCount2 + nCount2 <= nCount1 + zCount1) and (rCount2 < zCount1)), "BUCKET OVERFLOW ERROR"        
+        assert ((rCount2 + nCount2 <= nCount1 + zCount1) and (rCount2 <= zCount1)), "BUCKET OVERFLOW ERROR"        
                 
         #assign reals spaces among zeroes
         #assign noisys spaces among noisys (and zeroes if insufficient space)
