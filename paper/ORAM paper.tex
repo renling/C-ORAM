@@ -53,7 +53,15 @@ To access an element in C-ORAM, i.e., read or write, the client first fetches th
 
 \section{Our Contributions}
 
-In our project, we created a simplified C-ORAM protocol (eliminating the encryption for testing purposes). 
+In our project, we created a simplified C-ORAM protocol (eliminating the encryption for testing purposes). We tested the merging eviction protocol for consistency and loss of data:
+
+\subsection{Our Results}
+
+We ran tests with ORAMs ranging from $13$ to $15$ layers with bucket sizes ranging from $500$ to $10000$.
+
+In our tests, it became clear that the speed of the algorithm is asymptotically dependent on the number of blocks already in the tree (GRAPHS HERE KRISHNA)
+
+We were alarmed to learn that after adding z blocks, bucket overflow errors occurred almost every single iteration afterward. This presents a major problem for storing many blocks.
 
 
 \end{document}  
