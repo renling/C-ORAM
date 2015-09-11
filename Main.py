@@ -132,17 +132,17 @@ def testEvict():
     #commit?
 
 def timeEvict():
-    ORAMsize = (1 << 15) - 1
-    z = 20000
+    ORAMsize = (1 << 13) - 1
+    z = 4000
     
     start = time.clock()
     
     t = Tree(ORAMsize, z)
     
     timetaken = time.clock() - start
-    print("Took %.2f seconds to create tree" % (timetaken))
+    print("Took %.4f seconds to create tree" % (timetaken))
     
-    exp = 50
+    exp = 10
     
     leaves = t._leaves
     
@@ -160,7 +160,7 @@ def timeEvict():
         
         timetaken = time.clock() - start
         
-        print("Averaged %.2f seconds" % (timetaken/10))
+        print("%.2f" % (timetaken/10))
     
         
 
