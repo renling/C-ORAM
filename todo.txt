@@ -9,3 +9,7 @@ revisit merge function - random number generation DONE
 beware of cache threshing
 
 Leaf Cleaning DONE
+
+Test for bucket size
+
+Does only ratio of Z to A matter, or also absolute values
