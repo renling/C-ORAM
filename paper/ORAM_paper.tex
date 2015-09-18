@@ -71,9 +71,13 @@ In our project, we created a simplified C-ORAM protocol (eliminating the encrypt
 
 We ran tests with ORAMs ranging from $13$ to $15$ layers with bucket sizes ranging from $500$ to $10000$.
 
-In our tests, it became clear that the speed of the algorithm is asymptotically dependent on the number of blocks already in the tree (GRAPHS HERE KRISHNA)
+In our tests, it became clear that the speed of the algorithm is asymptotically dependent on the number of blocks already in the tree. While this does technically seem to be dependent on the constant bucket size, rather than the number of blocks added, it will always be true that the program will be more quickly able to shuffle and re-align buckets when fewer real blocks are present. (GRAPHS HERE KRISHNA)
 
-We were alarmed to learn that after adding z blocks, bucket overflow errors occurred almost every single iteration afterward. This presents a major problem for storing many blocks.
+We were alarmed to learn that after adding $z$ blocks (with no removal from the tree), bucket overflow errors occurred almost every single iteration afterward. This presents a major problem for storing many blocks. This necessitates two operations, first, the removal of blocks from the tree, which must be done at a frequency at least equal to that of eviction. In addition, noisy blocks must be cleaned from the tree as they will quickly accumulate in the leaves if not dealt with otherwise.
+
+In our protocol, we cleaned the leaf of the eviction path to prevent the tree from filling with noisy blocks, but noisy blocks still accumulated quite quickly in higher layers of the tree, frequently resulting in overflows. The only feasible response to this problem is the constant (or near-constant) removal of noisy blocks from the tree, however, this results in a major compromise of security, and invalidates the primary purpose of the noisy blocks to enable higher security without astronomical bandwidth requirements. We propose that, instead of ignoring the noisy blocks or removing all of them, we clean a random number of noisy blocks from each bucket during eviction (this process takes negligible time in comparison to the actual eviction).
+
+
 
 
 \end{document}  
