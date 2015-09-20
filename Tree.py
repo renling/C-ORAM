@@ -200,7 +200,9 @@ class Tree:
     def makeNoisy(self, bucket, bucketID):
         for i in range(len(bucket)):
             if bucket[i] >= 1:
-                if self.getMaxLevel(bucket[i], bucketID) < self.levelNumber(bucketID):
+                path = self.getPathNodes(bucket[i]) + [bucket[i]]
+                #check if bucket path + leaf contains bucketID
+                if (bucketID-1) in path:
                     bucket[i] = -1 #now it's noisy!
         
         return bucket
