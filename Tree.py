@@ -202,7 +202,7 @@ class Tree:
             if bucket[i] >= 1:
                 path = self.getPathNodes(bucket[i]) + [bucket[i]]
                 #check if bucket path + leaf contains bucketID
-                if (bucketID) in path:
+                if (bucketID) not in path:
                     bucket[i] = -1 #now it's noisy!
         
         return bucket
