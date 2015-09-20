@@ -217,7 +217,7 @@ def testOverflow():
     ORAMsize = (1 << 10) - 1
     z = 1000
     t = Tree(ORAMsize, z)
-    exp = 10
+    exp = 50
     
     
     leaves = t._leaves
@@ -230,5 +230,5 @@ def testOverflow():
             print(str(counter) + " evictions of " + str(exp) + " blocks completed")
 #testMerge(10000)
 #timeEvict()
-#testRate(15)
-testOverflow()
+testRate(1)
+#testOverflow()
