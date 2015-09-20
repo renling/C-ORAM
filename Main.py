@@ -213,7 +213,22 @@ def countTypes(bucket): #returns counts of [real, noisy, zero]
             
     return [rCount, nCount, zCount]
 
-
+def testOverflow():
+    ORAMsize = (1 << 10) - 1
+    z = 1000
+    t = Tree(ORAMsize, z)
+    exp = 10
+    
+    
+    leaves = t._leaves
+    counter = 0
+    
+    while True:
+            input = random.sample(leaves, exp)
+            t.evictAll(input)
+            counter = counter + 1
+            print(str(counter) + " evictions of " + str(exp) + " blocks completed")
 #testMerge(10000)
 #timeEvict()
-testRate(40)
+#testRate(15)
+testOverflow()
