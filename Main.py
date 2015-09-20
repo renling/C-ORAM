@@ -161,7 +161,37 @@ def timeEvict():
         timetaken = time.clock() - start
         
         print("%.2f" % (timetaken/10))
+
+def testRate(freq): #freq is an integer (A)
+    l = 10
     
+    ORAMsize = (1 << l) - 1
+    z = 1000
+    
+    t = Tree(ORAMsize, z)
+    
+    exp = l
+    
+    leaves = t._leaves
+    
+    
+    for i in range(int(500/l)):
+        input = random.sample(leaves, exp)
+        t.evictAll(input)
+    
+    counter = 0
+    
+    while True:
+        
+        for i in range(int(exp * freq)):
+            t.removeRand()
+        
+        input = random.sample(leaves, exp)
+        print(input)
+        t.evictAll(input)
+        
+        counter = counter + 1
+        print(str(counter) + " successful removal/eviction cycles")
         
 
 def countTypes(bucket): #returns counts of [real, noisy, zero]
@@ -185,4 +215,5 @@ def countTypes(bucket): #returns counts of [real, noisy, zero]
 
 
 #testMerge(10000)
-timeEvict()
+#timeEvict()
+testRate(40)

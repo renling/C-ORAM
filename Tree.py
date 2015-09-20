@@ -250,6 +250,23 @@ class Tree:
         if leaf1==leaf2:
             return self.levelNumber(leaf1);
         
+    def removeRand(self):
+        bucketID = random.randint(0, self._size - 1)
+        
+        removed = False
+        
+        for i in range(self._z):
+            if self._buckets[bucketID][i] >= 1:
+                self._buckets[bucketID][i] = 0
+                removed = True
+                break
+            
+        if not removed:
+            self.removeRand()
+        
+        
+        
+        
         
         
         
