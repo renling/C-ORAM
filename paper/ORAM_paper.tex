@@ -43,23 +43,23 @@ In this work, we examine Constant Communication ORAM (C-ORAM)~\cite{C-ORAM}, a r
 \section{Previous work}
 
 \subsection{Previous tree-based ORAM schemes}
-Initially proposed by Goldreich and Ostrovsky~\cite{TODO}, Oblivious RAM has long remained in the theoretical domain, with bandwidth being a limiting factor preventing the practical adoption of ORAM. Path ORAM~\cite{TODO} demonstrated the use of a tree data structure for ORAM, a significant step forward closer the theoretical asymptotic limit for ORAM - on the order of $\log N$. Path ORAM introduced the use of a binary tree to store an ORAM structure. Units of data called ``blocks" are stored in ``buckets" - the nodes of the binary tree. Each bucket occupies one whole node of the binary tree. Each data block has a unique path to a leaf node on the tree. A data access in Path ORAM consists of a request to the position map, which stores a list of data blocks and their corresponding paths. Then, the user pulls the entire contents of the path into the ``client space." The client space is assumed to be fully secure. The selected data block is operated on using a read/write operation. All other blocks are placed back on their original paths. The accessed block is assigned a new path to maintain obliviousness, and placed at the bucket which is the lowest intersection on the tree of the old and new paths. Ring ORAM, another tree-based ORAM, is an optimization of Path ORAM. One improvement is the reduction of bandwidth use during an access. If a tree has $l$ levels and each bucket has $z$ blocks, Ring ORAM pulls only $l$ blocks to the client, rather than $l*z$ blocks in Path ORAM. It does this by pulling only one block from each bucket on the path, rather than all blocks on a path. When traversing a path during an access, if the desired block is present in the current bucket, it is retrieved to the client. If not, a ``dummy" block - a block with meaningless, randomly generated data - is retrieved. The dummy blocks are discarded on the client side. 
+Initially proposed by Goldreich and Ostrovsky~\cite{TODO}, Oblivious RAM has long remained in the theoretical domain, with bandwidth being a limiting factor preventing the practical adoption of ORAM. Path ORAM~\cite{TODO} demonstrated the use of a tree data structure for ORAM, a significant step forward closer the theoretical asymptotic limit for ORAM - on the order of $\log N$. Path ORAM introduced the use of a binary tree to store an ORAM structure. Units of data called ``blocks" are stored in ``buckets" - the nodes of the binary tree. Each bucket occupies one whole node of the binary tree. Each data block has a unique path to a leaf node on the tree. A data access in Path ORAM consists of a request to the position map, which stores a list of data blocks and their corresponding paths. Then, the user pulls the entire contents of the path into the ``client space." The client space is assumed to be fully secure. The selected data block is operated on using a read/write operation. All other blocks are placed back on their original paths. The accessed block is assigned a new path to maintain obliviousness, and placed at the bucket which is the lowest intersection on the tree of the old and new paths. Ring ORAM, another tree-based ORAM, is an optimization of Path ORAM. One improvement is the reduction of bandwidth use during an access. If a tree has $l$ levels and each bucket has $z$ blocks, Ring ORAM pulls only $l$ blocks to the client, rather than $l*z$ blocks in Path ORAM. It does this by pulling only one block from each bucket on the path, rather than all blocks on a path. When traversing a path during an access, if the desired block is present in the current bucket, it is retrieved to the client and replaced with a dummy block - a block with meaningless, randomly generated data. If not, a reserved ``dummy" block, which is intended for the purpose of retrieval is sent back. The dummy blocks are discarded on the client side. Figure \ref{fig:ringaccess} shows the process of selecting one block from each bucket in Ring ORAM.
 
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{ringaccess1.png}
-  \caption{Ring ORAM access. The circled blocks are selected. The buckets which do not contain the target block (levels 1 and 3) send back a dummy block}
+  \caption{Ring ORAM access. The circled blocks are selected. The buckets which do not contain the target block (levels 1 and 3) send back a reserved dummy block}
   \label{fig:ringaccess}
 \end{figure}
-Figure \ref{fig:ringaccess} shows the process of selecting one block from each bucket in Ring ORAM.
 
-There are two changes to the eviction process in Ring ORAM.  First, eviction only occurs after every $A$ accesses, in which $A$ is a user-selected parameter. Second, instead of replacing blocks in the tree along the path they were retrieved from, they are replaced along a path chosen through reverse lexicographic order. Although $A$ and the path of eviction are public, they are deterministic and therefore independent of the block or the action taken, so they do not compromise the security of the system.
+
+There are two changes to the eviction process in Ring ORAM.  First, eviction only occurs after every $A$ accesses, in which $A$ is a user-selected parameter. Second, instead of replacing blocks in the tree along the path they were retrieved from, they are replaced along a path chosen through reverse lexicographic order. Although $A$ and the path of eviction are public, they are deterministic and therefore independent of the block or the action taken, so they do not compromise the security of the system. Figure \ref{fig:rlo} shows the process of selecting eviction paths in Ring ORAM, Onion ORAM, and C-ORAM.
+
 
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{rlo.png}
   \caption{Reverse lexicographical order balances the tree through standardized evictions.}
   \label{fig:rlo}
 \end{figure}
-Figure \ref{fig:rlo} shows the process of selecting eviction paths in Ring ORAM, Onion ORAM, and C-ORAM.
 
 
 \subsection{Onion ORAM}
@@ -78,21 +78,30 @@ To perform a data access in C-ORAM, the client first retrieves a location tag fo
 \subsection{Evictions}
 In C-ORAM, an eviction only happens every $A$  operations, where $A$ is a parameter. A path to evict along is, like Onion ORAM, chosen following reverse lexicographical order. First, the root bucket, which is assumed to be empty (e.g.. filled with $E (0)$'s (encryptions of zeros), is accessed and written to with encrypted data. This is a normal private write operation.
 
-Constant Communication ORAM differs from Onion ORAM in its eviction step. C-ORAM eviction occurs when the data in each bucket on the selected path merges its data with its two child buckets. These merges are called Oblivious Merges and are detailed in the following section. Only one of these buckets will be on the desired path, so the ``destination" bucket's ``sibling" will have data blocks that are not intended for it but for the destination bucket. Likewise, the destination bucket will have data blocks from the parent bucket that were meant for its sibling bucket. These blocks are called ``noisy" blocks and are functionally useless and disposable since an exact copy of the data exists elsewhere. After every bucket on the path has been merged with its two children, the leaf buckets evicted to will have all the data, so the parent buckets along the eviction path are cleared - e.g., filled with $E (0)$'s. This completes an eviction in C-ORAM. Before a C-ORAM eviction, the sibling buckets of the eviction path are given to be empty except for the leaves. After an eviction, all the non-leaf buckets on the path are empty while the sibling buckets are not. After a certain number of operations, the leaf buckets are also downloaded and its noisy blocks are cleared (to prevent overflow).
+Constant Communication ORAM differs from Onion ORAM in its eviction step. C-ORAM eviction occurs when the data in each bucket on the selected path merges its data with its two child buckets. These merges are called Oblivious Merges and are detailed in the following section. Only one of these buckets will be on the desired path, so the ``destination" bucket's ``sibling" will have data blocks that are not intended for it but for the destination bucket. Likewise, the destination bucket will have data blocks from the parent bucket that were meant for its sibling bucket. These blocks are called ``noisy" blocks and are functionally useless and disposable since an exact copy of the data exists elsewhere. After every bucket on the path has been merged with its two children, the leaf buckets evicted to will have all the data, so the parent buckets along the eviction path are cleared - e.g., filled with $E (0)$'s. This completes an eviction in C-ORAM. Before a C-ORAM eviction, the sibling buckets of the eviction path are given to be empty except for the leaves. After an eviction, all the non-leaf buckets on the path are empty while the sibling buckets are not. After a certain number of operations, the leaf buckets are also downloaded and its noisy blocks are cleared (to prevent overflow). Figure \ref{fig:c-evict} shows the process of eviction. 
+
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{c-evict.png}
+  \caption{Shows the eviction pattern down a particular path in C-ORAM. Although all the data being pushed down to children buckets by parent buckets are identical, noisy blocks on the eviction path are relevant data to their sibling buckets, and vice versa.}
+  \label{fig:c-evict}
+\end{figure}
+
 
 \subsection{Oblivious Mergings}
 Oblivious Merging is a method that combines two given buckets in a secure method using server computation. It permutes two buckets so that they are obliviously ``lined up" and combined into a single bucket. Rather that just appending the data in one bucket to the end of another bucket, oblivious merging saves spaces by``overlapping" the two buckets. Since noisy blocks are functionally useless, the buckets are permuted so that real data blocks in one bucket line up with either noisy blocks in the other bucket, and vice-versa. For example, in a merging of buckets $A$ and $B$, the $i$th position in bucket $A$ - given to be a real block - will line up with either a noisy block or an zero-encrypted block in position $i$ in bucket $B$. Thus, when the buckets are simply combined, the real blocks are prioritized and preserved and the noisy or zero-encrypted blocks with which they line up with are discarded, losing no information. Figure \ref{fig:merge} shows the process of oblivious merging. 
-
-
-A main concern with oblivious merging is the security of the permutation conducted by the server to obliviously line up the two buckets. Since C-ORAM's security proof is not intuitive, we provide an intuitive explanation: if bucket $A$ is randomly permuted and bucket $B$ is permuted to fill the spaces in bucket $A$, bucket $B$'s permutation must also be secure. 
-
-A second concern for C-ORAM is that during repeated oblivious merging, the data and noisy blocks will eventually exceed the storage space of the bucket and the bucket will ``overflow." Thus, it is necessary to determine a minimum size bound at which the bucket does not overflow. Mayberry et al. devises a theoretical proof for this in their C-ORAM proposition work. We address the bound using experimental methods in our tests, outlined below in our contributions.
 
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{merge}
   \caption{Two buckets are permuted so ``real" data blocks (in black) are lined up with either noisy blocks (in grey) or $E (0)$ blocks (in white). Thus, merging the two buckets while preserving real data blocks results in no loss of data.}
   \label{fig:merge}
 \end{figure}
+
+A main concern with oblivious merging is the security of the permutation conducted by the server to obliviously line up the two buckets. Since C-ORAM's security proof is not intuitive, we provide an intuitive explanation: if bucket $A$ is randomly permuted and bucket $B$ is permuted to fill the spaces in bucket $A$, bucket $B$'s permutation must also be secure. 
+
+A second concern for C-ORAM is that during repeated oblivious merging, the data and noisy blocks will eventually exceed the storage space of the bucket and the bucket will ``overflow." Thus, it is necessary to determine a minimum size bound at which the bucket does not overflow. Mayberry et al. devises a theoretical proof for this in their C-ORAM proposition work. We address the bound using experimental methods in our tests, outlined below in our contributions.
+
+
 
 
 \section{Our Contributions}
