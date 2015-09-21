@@ -1,0 +1,13 @@
+\begin{thebibliography}{1}
+
+\bibitem{OnionORAM}
+S.~Devadas, M.~van Dijk, C.~W. Fletcher, L.~Ren, E.~Shi, and D.~Wichs.
+\newblock Onion oram: A constant bandwidth blowup oblivious ram.
+\newblock Cryptology ePrint Archive, Report 2015/005, 2015.
+
+\bibitem{C-ORAM}
+T.~Moataz, T.~Mayberry, and E.-O. Blass.
+\newblock Constant communication oram with small blocksize.
+\newblock Cryptology ePrint Archive, Report 2015/570, 2015.
+
+\end{thebibliography}
