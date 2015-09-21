@@ -1,13 +1,45 @@
 \begin{thebibliography}{1}
 
+\bibitem{damgard}
+I.~Damg{\aa}rd and M.~Jurik.
+\newblock A generalisation, a simpli. cation and some applications of
+  paillier's probabilistic public-key system.
+\newblock In {\em Public Key Cryptography}, pages 119--136. Springer, 2001.
+
 \bibitem{OnionORAM}
 S.~Devadas, M.~van Dijk, C.~W. Fletcher, L.~Ren, E.~Shi, and D.~Wichs.
 \newblock Onion oram: A constant bandwidth blowup oblivious ram.
 \newblock Cryptology ePrint Archive, Report 2015/005, 2015.
 
+\bibitem{gold}
+O.~Goldreich.
+\newblock Towards a theory of software protection and simulation by oblivious
+  rams.
+\newblock In {\em Proceedings of the nineteenth annual ACM symposium on Theory
+  of computing}, pages 182--194. ACM, 1987.
+
+\bibitem{goldostrov}
+O.~Goldreich and R.~Ostrovsky.
+\newblock Software protection and simulation on oblivious rams.
+\newblock {\em Journal of the ACM (JACM)}, 43(3):431--473, 1996.
+
 \bibitem{C-ORAM}
 T.~Moataz, T.~Mayberry, and E.-O. Blass.
 \newblock Constant communication oram with small blocksize.
 \newblock Cryptology ePrint Archive, Report 2015/570, 2015.
+
+\bibitem{RingORAM}
+L.~Ren, C.~W. Fletcher, A.~Kwon, E.~Stefanov, E.~Shi, M.~van Dijk, and
+  S.~Devadas.
+\newblock Ring oram: Closing the gap between small and large client storage
+  oblivious ram.
+\newblock Technical report, Cryptology ePrint Archive, Report 2014/997, 2014.
+  http://eprint. iacr. org.
+
+\bibitem{PathORAM}
+E.~Stefanov, M.~Van~Dijk, E.~Shi, C.~Fletcher, L.~Ren, X.~Yu, and S.~Devadas.
+\newblock Path oram: An extremely simple oblivious ram protocol.
+\newblock Proceedings of the 2013 ACM SIGSAC conference on Computer \&
+  communications security, 2013.
 
 \end{thebibliography}
