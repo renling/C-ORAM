@@ -125,7 +125,7 @@ Using Python 2.7, we created a simulation of C-ORAM's eviction process to study 
 
 In our tests, it became clear that the speed of the algorithm is asymptotically dependent on the number of blocks already in the tree. This does technically support the constant bandwidth requirement, seeming to be dependent on the constant bucket size, rather than the number of blocks added. However, it will always be true that the program will shuffle and re-align buckets more quickly when fewer real blocks are present. For instance,  for a tree with 13 layers and $z = 4000$, through our testing it became evident that the average eviction time reaches an asymptotic limit of $\approx 1.4$ seconds after about 400 accesses. 
 
-In a test for tree stability, blocks were repeatedly added to the tree via eviction until a bucket overflowed (Results in graph below). We learned that bucket overflow errors occurred quite quickly if the number of blocks added per eviction exceeded approximately 10 \% of the bucket size. This presents a minor problem for storing many blocks, as frequent accesses will necessitate the need for evictions of many blocks at once. To correct for this issue, it is necessary to either evict at about every $\frac{z}{100}$ accesses, or to divide evictions into several smaller evictions of fewer blocks to distribute the stress among multiple paths of the tree.
+In a test for tree stability, blocks were repeatedly added to the tree via eviction until a bucket overflowed. Results from our experimental test are in Figure ~\ref{fig:overflow graph}. We learned that bucket overflow errors occurred quite quickly if the number of blocks added per eviction exceeded approximately 10 \% of the bucket size. This presents a minor problem for storing many blocks, as frequent accesses will necessitate the need for evictions of many blocks at once. To correct for this issue, it is necessary to either evict at about every $\frac{z}{100}$ accesses, or to divide evictions into several smaller evictions of fewer blocks to distribute the stress among multiple paths of the tree.
 
 \begin{figure}[H]
   \includegraphics[width=\linewidth]{overflowgraph}
@@ -133,7 +133,7 @@ In a test for tree stability, blocks were repeatedly added to the tree via evict
   \label{fig:overflowgraph}
 \end{figure}
 
-In addition, noisy blocks must be cleaned from the tree as they will accumulate in the leaves if not dealt with otherwise. This can cause bucket overflows if too many blocks are evicted through the tree. In our protocol, we cleaned the leaf of the eviction path to prevent the tree from filling with noisy blocks, which reduced this overflow rate.
+In addition, noisy blocks must be cleaned from the tree as they will accumulate in the leaves if not dealt with otherwise. This can cause bucket overflows if too many blocks are evicted through the tree. In our protocol, we cleared the leaf of the eviction path to prevent the tree from filling with noisy blocks, which reduced this overflow rate. A leaf clear is, in other words, a replacement of all the blocks in the bucket with $E (0)$ blocks. We performed a leaf clearing every eviction - every $A$ accesses. 
 
 \begin{figure}[H]
   \includegraphics[width=\linewidth]{evictionfreqgraph}

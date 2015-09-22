@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  22 SEP 2015 09:33
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  22 SEP 2015 18:04
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -284,42 +284,52 @@ File: runtimegraph.png Graphic file (type png)
 Package pdftex.def Info: runtimegraph.png used on input line 121.
 (pdftex.def)             Requested size: 397.485pt x 245.56862pt.
  [13 <./runtimegraph.png>]
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 128.
+
+
+LaTeX Warning: Reference `fig:overflow graph' on page 14 undefined on input lin
+e 128.
+
 <overflowgraph.png, id=56, 594.0839pt x 438.51967pt>
 File: overflowgraph.png Graphic file (type png)
  <use overflowgraph.png>
 Package pdftex.def Info: overflowgraph.png used on input line 131.
 (pdftex.def)             Requested size: 397.485pt x 293.40517pt.
 
-[14 <./overflowgraph.png>]
-<evictionfreqgraph.png, id=62, 769.89673pt x 494.3268pt>
+[14] <evictionfreqgraph.png, id=62, 769.89673pt x 494.3268pt>
 File: evictionfreqgraph.png Graphic file (type png)
 
 <use evictionfreqgraph.png>
 Package pdftex.def Info: evictionfreqgraph.png used on input line 139.
 (pdftex.def)             Requested size: 397.485pt x 255.2185pt.
- [15 <./evictionfreqgraph.png>] (./ORAM_paper.bbl
-[16]) [17] (./ORAM_paper.aux) ) 
+ [15 <./overflowgraph.png>] [16 <./evictionfreqgraph.png>] (./ORAM_paper.bbl [1
+7]) [18] (./ORAM_paper.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 2469 strings out of 493117
- 34995 string characters out of 6135433
+ 2473 strings out of 493117
+ 35050 string characters out of 6135433
  97397 words of memory out of 5000000
- 5882 multiletter control sequences out of 15000+600000
- 24293 words of font info for 60 fonts, out of 8000000 for 9000
+ 5885 multiletter control sequences out of 15000+600000
+ 25919 words of font info for 62 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  37i,6n,29p,1411b,225s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2014/texmf-dist/fonts/enc/dv
-ips/base/8r.enc}</usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmmi12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmmi8.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmr12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/c
-mr8.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
-10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></u
-sr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/t
-exlive/2014/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on ORAM_paper.pdf (17 pages, 345680 bytes).
+{/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
+exlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/te
+xlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texl
+ive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texliv
+e/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2
+014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/20
+14/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2014/texmf-d
+ist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/
+type1/urw/times/utmri8a.pfb>
+Output written on ORAM_paper.pdf (18 pages, 348193 bytes).
 PDF statistics:
- 101 PDF objects out of 1000 (max. 8388607)
- 65 compressed objects within 1 object stream
+ 104 PDF objects out of 1000 (max. 8388607)
+ 67 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  36 words of extra memory for PDF output out of 10000 (max. 10000000)
 
