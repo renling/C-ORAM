@@ -178,20 +178,36 @@ def testRate(freq): #freq is an integer (A)
     for i in range(int(500/l)):
         input = random.sample(leaves, exp)
         t.evictAll(input)
+    timetaken = 0
     
-    counter = 0
     
-    while True:
+    for i in range(10):
+        t = Tree(ORAMsize, z)
         
-        for i in range(int(exp * freq)):
-            t.removeRand()
+        for i in range(int(500/l)):
+            input = random.sample(leaves, exp)
+            t.evictAll(input)
         
-        input = random.sample(leaves, exp)
-        print(input)
-        t.evictAll(input)
+        start = time.clock()
+            
+        counter = 0
+            
+        while counter*freq < 2000:
+            
+            for i in range(freq):
+                t.removeRand()
+            
+            input = random.sample(leaves, freq)
+            #print(input)
+            t.evictAll(input)
+            
+            counter = counter + 1
+            #print(str(counter) + " successful removal/eviction cycles")
+    
+        timetaken = timetaken + time.clock() - start
+        print(timetaken)
         
-        counter = counter + 1
-        print(str(counter) + " successful removal/eviction cycles")
+    print("%.2f" % (timetaken/10))
         
 
 def countTypes(bucket): #returns counts of [real, noisy, zero]
@@ -230,5 +246,5 @@ def testOverflow():
             print(str(counter) + " evictions of " + str(exp) + " blocks completed")
 #testMerge(10000)
 #timeEvict()
-#testRate(15)
-testOverflow()
+testRate(8)
+#testOverflow()
