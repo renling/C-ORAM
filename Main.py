@@ -246,5 +246,5 @@ def testOverflow():
             print(str(counter) + " evictions of " + str(exp) + " blocks completed")
 #testMerge(10000)
 #timeEvict()
-testRate(8)
+testRate(40)
 #testOverflow()

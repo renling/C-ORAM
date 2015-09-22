@@ -131,7 +131,17 @@ In a test for tree stability, blocks were repeatedly added to the tree via evict
   \caption{Graph 2: Evaluation of overflow of tree when adding blocks without removal}
   \label{fig:overflowgraph}
 \end{figure}
+
 In addition, noisy blocks must be cleaned from the tree as they will quickly accumulate in the leaves if not dealt with otherwise. In our protocol, we cleaned the leaf of the eviction path to prevent the tree from filling with noisy blocks, which reduced this overflow rate.
+
+We tested a multitude of eviction frequencies for a tree of $10$ levels, with a bucket size $z = 1000$, and found the results in the below graph. The graph implies that it is better to evict less frequently if the optimal frequency is unknown because of the much shallower slope to the right of the ideal point.
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{evictionfreqgraph}
+  \caption{Figure 7: Graph 3: Evaluation of eviction speed for different frequencies}
+  \label{fig:evictionfreqgraph}
+\end{figure}
+
 
 Without loss of security, we were able to randomly align the merging buckets by only re-ordering one bucket. This requires half the bandwidth of the stated protocol which re-orders both buckets. However, since re-ordering the first bucket is akin to shuffling it randomly, and it is already randomly ordered, no security is lost by re-ordering only one bucket.
 
