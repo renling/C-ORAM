@@ -124,7 +124,7 @@ In our tests, it became clear that the speed of the algorithm is asymptotically 
 \end{figure}
 
 
-We were alarmed to learn that bucket overflow errors occurred quite quickly if more than 10% of the bucket This presents a major problem for storing many blocks. To correct for this issue, it is necessary to subdivide evictions if the client storage has a large number of blocks. 
+In a test for tree stability, blocks were repeatedly added to the tree via eviction until a bucket overflowed (Results in graph below). We were alarmed to learn that bucket overflow errors occurred quite quickly if the number of blocks added per eviction exceeded approximately 10% of the bucket size. This presents a minor problem for storing many blocks. To correct for this issue, it is necessary to either evict at least every $\frac{z}{10}$ accesses. 
 
 In addition, noisy blocks must be cleaned from the tree as they will quickly accumulate in the leaves if not dealt with otherwise. In our protocol, we cleaned the leaf of the eviction path to prevent the tree from filling with noisy blocks, which reduced this overflow rate.
 
