@@ -119,7 +119,7 @@ In our tests, it became clear that the speed of the algorithm is asymptotically 
 
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{runtimegraph}
-  \caption{[b]Graph 1:[/b] Evaluation of runtime of program based on blocks already in tree}
+  \caption{Graph 1: Evaluation of runtime of program based on blocks already in tree}
   \label{fig:runtimegraph}
 \end{figure}
 
@@ -128,9 +128,9 @@ In a test for tree stability, blocks were repeatedly added to the tree via evict
 
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{overflowgraph}
-  \caption{[b]Graph 2:[/b] Evaluation of overflow of tree when adding blocks without removal}
+  \caption{Graph 2: Evaluation of overflow of tree when adding blocks without removal}
   \label{fig:overflowgraph}
-
+\end{figure}
 In addition, noisy blocks must be cleaned from the tree as they will quickly accumulate in the leaves if not dealt with otherwise. In our protocol, we cleaned the leaf of the eviction path to prevent the tree from filling with noisy blocks, which reduced this overflow rate.
 
 Without loss of security, we were able to randomly align the merging buckets by only re-ordering one bucket. This requires half the bandwidth of the stated protocol which re-orders both buckets. However, since re-ordering the first bucket is akin to shuffling it randomly, and it is already randomly ordered, no security is lost by re-ordering only one bucket.
