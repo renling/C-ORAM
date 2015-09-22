@@ -116,7 +116,7 @@ We argue that during an oblivious merge operation, it is only necessary to permu
 
 \subsection{Experimental Results}
 
-We ran tests with ORAMs ranging from $10$ to $15$ layers with bucket sizes ranging from $500$ to $10000$.
+We ran tests with ORAMs ranging from $10$ to $15$ layers with bucket sizes ranging from $500$ to $10000$. The computer used had $4.00$ gB of RAM and the programs were interpreted with Python 2.7.
 
 In our tests, it became clear that the speed of the algorithm is asymptotically dependent on the number of blocks already in the tree. This does technically support the constant bandwidth requirement, seeming to be dependent on the constant bucket size, rather than the number of blocks added. However, it will always be true that the program will shuffle and re-align buckets more quickly when fewer real blocks are present.
 
