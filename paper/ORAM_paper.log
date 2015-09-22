@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  22 SEP 2015 18:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  22 SEP 2015 18:31
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -237,64 +237,58 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
 
 {/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 45.
- [3]
-<ringaccess1.png, id=16, 885.3075pt x 590.205pt>
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 43.
+ [3] [4]
+<ringaccess1.png, id=20, 439.6425pt x 296.10625pt>
 File: ringaccess1.png Graphic file (type png)
  <use ringaccess1.png>
-Package pdftex.def Info: ringaccess1.png used on input line 51.
-(pdftex.def)             Requested size: 397.485pt x 264.9954pt.
+Package pdftex.def Info: ringaccess1.png used on input line 49.
+(pdftex.def)             Requested size: 397.485pt x 267.7221pt.
 
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[4] <rlo.png, id=21, 790.955pt x 203.76125pt>
+<rlo.png, id=21, 790.955pt x 203.76125pt>
 File: rlo.png Graphic file (type png)
  <use rlo.png>
-Package pdftex.def Info: rlo.png used on input line 61.
+Package pdftex.def Info: rlo.png used on input line 59.
 (pdftex.def)             Requested size: 397.485pt x 102.3996pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[5 <./ringaccess1.png>] [6 <./rlo.png>] [7] [8]
-<c-evict.png, id=35, 794.97pt x 351.3125pt>
+ [5 <./ringaccess1.png>] [6 <./rlo.png>] [7] [8] <c-evict.png, id=35, 810.02625
+pt x 371.3875pt>
 File: c-evict.png Graphic file (type png)
- <use c-evict.png>
-Package pdftex.def Info: c-evict.png used on input line 87.
-(pdftex.def)             Requested size: 397.485pt x 175.66116pt.
+
+<use c-evict.png>
+Package pdftex.def Info: c-evict.png used on input line 85.
+(pdftex.def)             Requested size: 397.485pt x 182.24214pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[9] [10 <./c-evict.png>] <merge.png, id=42, 548.0475pt x 142.5325pt>
+[9] [10 <./c-evict.png>] <merge.png, id=44, 548.0475pt x 142.5325pt>
 File: merge.png Graphic file (type png)
 
 <use merge.png>
-Package pdftex.def Info: merge.png used on input line 108.
+Package pdftex.def Info: merge.png used on input line 106.
 (pdftex.def)             Requested size: 397.485pt x 103.37798pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[11] [12 <./merge.png>] <runtimegraph.png, id=49, 609.27625pt x 376.40625pt>
+[11] [12 <./merge.png>] <runtimegraph.png, id=51, 609.27625pt x 376.40625pt>
 File: runtimegraph.png Graphic file (type png)
 
 <use runtimegraph.png>
-Package pdftex.def Info: runtimegraph.png used on input line 121.
+Package pdftex.def Info: runtimegraph.png used on input line 119.
 (pdftex.def)             Requested size: 397.485pt x 245.56862pt.
  [13 <./runtimegraph.png>]
-<overflowgraph.png, id=56, 594.0839pt x 438.51967pt>
+<overflowgraph.png, id=57, 594.0839pt x 438.51967pt>
 File: overflowgraph.png Graphic file (type png)
  <use overflowgraph.png>
-Package pdftex.def Info: overflowgraph.png used on input line 131.
+Package pdftex.def Info: overflowgraph.png used on input line 129.
 (pdftex.def)             Requested size: 397.485pt x 293.40517pt.
 
-[14] <evictionfreqgraph.png, id=62, 769.89673pt x 494.3268pt>
+[14] <evictionfreqgraph.png, id=63, 769.89673pt x 494.3268pt>
 File: evictionfreqgraph.png Graphic file (type png)
 
 <use evictionfreqgraph.png>
-Package pdftex.def Info: evictionfreqgraph.png used on input line 139.
+Package pdftex.def Info: evictionfreqgraph.png used on input line 137.
 (pdftex.def)             Requested size: 397.485pt x 255.2185pt.
  [15 <./overflowgraph.png>] [16 <./evictionfreqgraph.png>] (./ORAM_paper.bbl [1
 7]) [18] (./ORAM_paper.aux) ) 
@@ -315,9 +309,9 @@ mr12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
 .pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr
 /local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/tex
 live/2014/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on ORAM_paper.pdf (18 pages, 347638 bytes).
+Output written on ORAM_paper.pdf (18 pages, 335231 bytes).
 PDF statistics:
- 104 PDF objects out of 1000 (max. 8388607)
+ 105 PDF objects out of 1000 (max. 8388607)
  67 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  36 words of extra memory for PDF output out of 10000 (max. 10000000)
