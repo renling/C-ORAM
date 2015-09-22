@@ -217,7 +217,7 @@ def testOverflow():
     ORAMsize = (1 << 10) - 1
     z = 1000
     t = Tree(ORAMsize, z)
-    exp = 10
+    exp = 100
     
     
     leaves = t._leaves

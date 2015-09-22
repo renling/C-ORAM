@@ -126,9 +126,7 @@ In our tests, it became clear that the speed of the algorithm is asymptotically 
 
 We were alarmed to learn that bucket overflow errors occurred quite quickly if more than 10% of the bucket This presents a major problem for storing many blocks. To correct for this issue, it is necessary to subdivide evictions if the client storage has a large number of blocks. 
 
-In addition, noisy blocks must be cleaned from the tree as they will quickly accumulate in the leaves if not dealt with otherwise.
-
-In our protocol, we cleaned the leaf of the eviction path to prevent the tree from filling with noisy blocks, but noisy blocks still accumulated quite quickly in higher layers of the tree, resulting in overflows. The only feasible response to this problem is the constant (or near-constant) removal of noisy blocks from the tree, however, this results in a major compromise of security, and invalidates the primary purpose of the noisy blocks to enable higher security without astronomical bandwidth requirements. We propose that, to reduce this potential for error, we clean a random number of noisy blocks from each bucket during eviction (this process takes negligible time in comparison to the actual eviction).
+In addition, noisy blocks must be cleaned from the tree as they will quickly accumulate in the leaves if not dealt with otherwise. In our protocol, we cleaned the leaf of the eviction path to prevent the tree from filling with noisy blocks, which reduced this overflow rate.
 
 Without loss of security, we were able to randomly align the merging buckets by only re-ordering one bucket. This requires half the bandwidth of the stated protocol which re-orders both buckets. However, since re-ordering the first bucket is akin to shuffling it randomly, and it is already randomly ordered, no security is lost by re-ordering only one bucket.
 
