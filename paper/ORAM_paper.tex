@@ -10,10 +10,15 @@
 \usepackage{amssymb}
 \usepackage{setspace}
 \doublespacing
+\usepackage{titlesec}
+\setcounter{secnumdepth}{4}
 
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 
-
-\title{Optimizations and Discoveries Regarding Constant-Communication Oblivious RAM}
+\title{Optimizations and Findings Regarding Constant-Communication Oblivious RAM}
 \author{Akiva Gordon, Krishna Suraj}
 
 
@@ -44,7 +49,7 @@ Our goal in this work is to optimize the latest tree-based ORAM algorithm, Const
 \subsection{Previous tree-based ORAM schemes}
 Initially proposed by Goldreich and Ostrovsky~\cite{gold}~\cite{goldostrov}, Oblivious RAM has long remained in the theoretical domain, with bandwidth being a limiting factor preventing the practical adoption of ORAM. Path ORAM demonstrated the use of a tree data structure for ORAM, which achieved an asymptotic efficiency on the order of $\log N$ - a significant step. Path ORAM introduced the use of a binary tree to store an ORAM structure. Units of data called ``blocks" are stored in ``buckets" - the nodes of the binary tree. Each bucket occupies one whole node of the binary tree. Each data block has a unique path to a leaf node on the tree. A data access in Path ORAM consists of a request to the position map, which stores a list of data blocks and their corresponding paths. Then, the user pulls the entire contents of the path into the ``client space." The client space is assumed to be fully secure, which means that it cannot be seen or modified by the server. The selected data block is operated on using a read/write operation. All other blocks are placed back on their original paths, but as far down towards the leaves as possible. The accessed block is assigned a new path to ensure that the server cannot guess which path the block is on to maintain obliviousness, and placed at the bucket which is the lowest intersection on the tree of the old and new paths. 
 
-Ring ORAM, another tree-based ORAM, is an optimization of Path ORAM. One improvement is the reduction of bandwidth use during an access. If a tree has $l$ levels and each bucket has $z$ blocks, Ring ORAM pulls only $l$ blocks to the client, rather than $l*z$ blocks in Path ORAM. It does this by pulling only one block from each bucket on the path, rather than all blocks on a path. When traversing a path during an access, if the desired block is present in the current bucket, it is retrieved to the client and replaced with a dummy block - a block with meaningless, randomly generated data. If not, a reserved ``dummy" block, which is intended for the purpose of retrieval is sent back. The dummy blocks are discarded on the client side. Figure \ref{fig:ringaccess} shows the process of selecting one block from each bucket in Ring ORAM.
+Ring ORAM, another tree-based ORAM, is an optimization of Path ORAM. One improvement is the reduction of bandwidth use during an access. If a tree has $l$ levels and each bucket has $z$ blocks, Ring ORAM pulls only $l$ blocks to the client, rather than $l*z$ blocks in Path ORAM. It does this by pulling only one block from each bucket on the path, rather than all blocks on a path. When traversing a path during an access, if the desired block is present in the current bucket, it is retrieved to the client and replaced with a dummy block - a block with meaningless, randomly generated data. If not, a reserved dummy block, which is intended for the purpose of retrieval is sent back. The dummy blocks are discarded on the client side. Figure \ref{fig:ringaccess} shows the process of selecting one block from each bucket in Ring ORAM.
 
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{ringaccess1.png}
@@ -100,9 +105,11 @@ A concern for C-ORAM is that during repeated oblivious merging, the data and noi
 
 \section{Our Contributions}
 
-In our project, we explain intuitively why the oblivious merging in C-ORAM is secure. We also argue that during oblivious merging, only a single block needs to be permuted and aligned with the other. Also, we tested the merging eviction protocol for consistency and loss of data:
+In this section, we first explain intuitively why the oblivious merging in C-ORAM is secure. Next, we argue that during oblivious merging, only a single bucket needs to be permuted and aligned with the other. We then present and discuss the results from our tests of C-ORAM's eviction process, including our tests for determining optimal eviction frequency and bucket size, while ensuring consistency and preventing loss of data from our algorithm.
+
 \subsection{Oblivious Merging Security Explanation}
-A main concern with oblivious merging is the security of the permutation conducted by the server to obliviously line up the two buckets. Since C-ORAM's security proof is not intuitive, we provide an intuitive explanation: if bucket $A$ is randomly permuted and bucket $B$ is permuted to fill the spaces in bucket $A$, bucket $B$'s permutation must also be secure. To elaborate: considering Figure \ref{fig:merge}, the left bucket is assumed to be randomly permuted - that is, the server does not know the locations of specific real, noisy, or $E (0)$ blocks in the bucket. The right bucket is permuted so that real blocks line up with $E (0)$ blocks to prevent a loss of information. Also, noisy blocks are lined up with other noisy blocks to keep the number of noisy blocks in the merged bucket low. This second permutation must be secure and as random as the orientation of the left bucket because it is dependent on the left bucket. Thus, intuitively, we come to an understanding that the oblivious merge operation is secure. Figure \ref{fig:merge} visually diagrams the process of oblivious merging.
+A main concern with oblivious merging is the security of the permutation conducted by the server to obliviously line up the two buckets. Since C-ORAM's security proof is not intuitive, we provide an intuitive explanation: if bucket $A$ is randomly permuted and bucket $B$ is permuted to fill the spaces in bucket $A$, bucket $B$'s permutation must also be secure. To elaborate: considering Figure ~\ref{fig:merge}, the left bucket is assumed to be randomly permuted - that is, the server does not know the locations of specific real, noisy, or $E (0)$ blocks in the bucket. The right bucket is permuted so that real blocks line up with $E (0)$ blocks to prevent a loss of information. Also, noisy blocks are lined up with other noisy blocks to keep the number of noisy blocks in the merged bucket low. This second permutation must be secure and as random as the orientation of the left bucket because it is dependent on the left bucket. Thus, intuitively, we come to an understanding that the oblivious merge operation is secure. Figure ~\ref{fig:merge} visually diagrams the process of oblivious merging.
+
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{merge}
   \caption{Two buckets are permuted so ``real" data blocks (in black) are lined up with $E (0)$ blocks (in white) and noisy blocks (grey) are lined up with other noisy blocks. Thus, merging the two blocks occurs without the loss of real data blocks while keeping the number of noisy blocks low}
@@ -110,41 +117,47 @@ A main concern with oblivious merging is the security of the permutation conduct
 \end{figure}
 
 \subsection{Single-bucket permutation}
-We argue that during an oblivious merge operation, it is only necessary to permute one bucket. In figure \ref{fig:merge}, only the right bucket is permuted and the left bucket stays in its original ordering. This is secure because the left bucket is assumed to be a random permutation - the server cannot determine which blocks are noisy, real, or $ E (0) $. Thus, if the left bucket is already secure from the server, it is only necessary to permute the right block. This is a benefit for computational efficiency as it reduces the number of operations in oblivious merging by a factor of 2 - an optimization of server computation.
+We argue that during an oblivious merge operation, it is only necessary to permute one bucket. In figure ~\ref{fig:merge}, only the right bucket is permuted and the left bucket stays in its original ordering. This is secure because the left bucket is assumed to be a random permutation - the server cannot determine which blocks are noisy, real, or $ E (0) $. Thus, if the left bucket is already secure from the server, it is only necessary to permute the right block. This is a benefit for computational efficiency as it reduces the number of operations in oblivious merging by a factor of 2. This is an important optimization of server computation.
 
 \subsection{Experimental Results}
 
-Using Python 2.7, we created a simulation of C-ORAM's eviction process to study certain parameters. This program was able to test the time performance and efficiency of C-ORAM over many accesses. It also included the ability to set certain parameters such as bucket size and eviction frequency. We ran tests with ORAM trees ranging from $10$ to $15$ layers in depth with bucket sizes ranging from $500$ to $10000$ blocks. The computer used was a Lenovo Thinkpad (SL500 2007) running Windows Vista. It had $4.00$ gB of RAM, and a $2.00$ gHz Intel Core2 Duo CPU. The programs were interpreted with Python 2.7. It is important to note that our program was a simulation - very useful for testing and determining the optimal values of certain parameters and visualizing the general performance trend, but not necessarily with the same performance as a full C-ORAM product for users. Specifically, blocks were not encrypted (to save bandwidth) and accuracy tests were performed through simple reads of the storage tree rather than through the Merkel tree structure used in most ORAMs. However, this simulation allowed us to gain useful insights into certain aspects of the algorithm's performance.
+Using Python 2.7, we created a simulation of C-ORAM's eviction process to study certain parameters. This program was able to test the time performance and efficiency of C-ORAM over many accesses. It also included the ability to set certain parameters such as bucket size and eviction frequency. We ran tests with ORAM trees ranging from $10$ to $15$ layers in depth with bucket sizes ranging from $500$ to $10000$ blocks. The computer used was a Lenovo Thinkpad (SL500 2007) running Windows Vista. It had $4.00$ gB of RAM, and a $2.00$ gHz Intel Core2 Duo CPU. The programs were interpreted with Python 2.7. It is important to note that our program was a simulation - very useful for testing and determining the optimal values of certain parameters and visualizing the general performance trend, but not necessarily with the same performance as a full C-ORAM product for users. Specifically, blocks were not encrypted (to save bandwidth) and accuracy tests were performed through simple reads of the storage tree rather than through the Merkel tree structure used in most ORAMs. However, this simulation allowed us to gain useful insights into certain aspects of the algorithm's performance. 
+\subsubsection{Runtime}
+Our first test was a runtime test (Figure ~\ref{fig:runtimegraph}) based on the number of accesses to the tree. Although there is no baseline for this test to compare it to Onion ORAM's performance, it is useful first to judge the accuracy of our algorithm and ensure that it did not crash even while handling many accesses. In addition, it allows us to visualize a general trend of the efficiency of the C-ORAM eviction cycle dependent on the number of accesses to the tree.
 
 \begin{figure}[H]
   \includegraphics[width=\linewidth]{runtimegraph}
-  \caption{Graph 1: Evaluation of runtime of program based on blocks already in tree}
+  \caption{Evaluation of runtime of program based on accesses to the tree}
   \label{fig:runtimegraph}
 \end{figure}
 
-In our tests, it became clear that the speed of the algorithm is asymptotically dependent on the number of blocks already in the tree. This does technically support the constant bandwidth requirement, seeming to be dependent on the constant bucket size, rather than the number of blocks added. However, it will always be true that the program will shuffle and re-align buckets more quickly when fewer real blocks are present. For instance,  for a tree with 13 layers and $z = 4000$, through our testing it became evident that the average eviction time reaches an asymptotic limit of $\approx 1.4$ seconds after about 400 accesses. 
+In our tests, it became clear that the speed of the algorithm is asymptotically dependent on the number of blocks already in the tree. This does technically support the constant bandwidth requirement, seeming to be dependent on the constant bucket size, rather than the number of blocks added. However, it will always be true that the program will shuffle and re-align buckets more quickly when fewer real blocks are present. For instance,  for a tree with 13 layers and $z$ (bucket size) $= 4000$, through our testing it became evident that the average eviction time reaches an asymptotic limit of $\approx 1.4$ seconds after about 400 accesses.
 
+\subsubsection{Overflow and Stability Considering Bucket Sizes}
 In a test for tree stability, blocks were repeatedly added to the tree via eviction until a bucket overflowed. Results from our experimental test are in Figure ~\ref{fig:overflowgraph}. We learned that bucket overflow errors occurred quite quickly if the number of blocks added per eviction exceeded approximately 10 \% of the bucket size. This presents a minor problem for storing many blocks, as frequent accesses will necessitate the need for evictions of many blocks at once. To correct for this issue, it is necessary to either evict at about every $\frac{z}{100}$ accesses, or to divide evictions into several smaller evictions of fewer blocks to distribute the stress among multiple paths of the tree.
 
 \begin{figure}[H]
   \includegraphics[width=\linewidth]{overflowgraph}
-  \caption{Graph 2: Evaluation of overflow of tree when adding blocks without removal}
+  \caption{Evaluation of overflow of tree when adding blocks without removal}
   \label{fig:overflowgraph}
 \end{figure}
 
 In addition, noisy blocks must be cleaned from the tree as they will accumulate in the leaves if not dealt with otherwise. This can cause bucket overflows if too many blocks are evicted through the tree. In our protocol, we cleared the leaf of the eviction path to prevent the tree from filling with noisy blocks, which reduced this overflow rate. A leaf clear is, in other words, a replacement of all the blocks in the bucket with $E (0)$ blocks. We performed a leaf clearing every eviction - every $A$ accesses. 
 
+\subsubsection{Eviction Frequency}
+Our third test was to determine the optimal eviction frequency (the parameter $A$) for C-ORAM. We tested a multitude of eviction frequencies for a tree of $10$ levels, with a bucket size $z = 1000$, and found the results in Figure ~\ref{fig:evictionfreqgraph}.
+
 \begin{figure}[H]
   \includegraphics[width=\linewidth]{evictionfreqgraph}
-  \caption{Figure 7: Graph 3: Evaluation of eviction speed for different frequencies}
+  \caption{Evaluation of eviction speed for different frequencies}
   \label{fig:evictionfreqgraph}
 \end{figure}
 
 
-We tested a multitude of eviction frequencies for a tree of $10$ levels, with a bucket size $z = 1000$, and found the results in the graph above. Our data suggests an optimal eviction frequency at $A=15$ for a tree with $10$ levels and $z = 1000$. The optimal eviction frequency is an important consideration for the performance of any C-ORAM, since, as shown above, even a slight change in frequency can result in a major loss of efficiency. Our data also suggests that less frequent evictions are generally more efficient than more frequent evictions (though, of course the right side of the graph has a shallow slope upward, so an excessively infrequent eviction could have other consequences). However, as noted above, evicting too many blocks at a time greatly increases the likelihood of bucket overflow. Although we only conducted a limited test of efficiency, our program can be used as a tool to determine the optimal eviction frequency for any C-ORAM given the bucket and tree sizes.
+ Our results suggest an optimal eviction frequency at $A=15$ for a tree with $10$ levels and $z = 1000$. The optimal eviction frequency is an important consideration for the performance of any C-ORAM, since, as shown above, even a slight change in frequency can result in a major loss of efficiency. Our results also suggest that less frequent evictions are generally more efficient than more frequent evictions (though, of course the right side of the graph has a shallow slope upward, so an excessively infrequent eviction could have other consequences). However, as noted above, evicting too many blocks at a time greatly increases the likelihood of bucket overflow. A general trend is to keep $A$ large. Our program can be used as a tool to determine the optimal eviction frequency for any C-ORAM given the bucket and tree sizes.
 
-\subsection{Conclusions and Future Work}
-In this work, after a study of previous ORAMs, we discuss and analyze C-ORAM, the latest development in constant-bandwidth Oblivious RAM. We suggest various optimizations and also offer a security explanation to improve upon oblivious merging - a key component in C-ORAM. Using a simulation of C-ORAM's eviction process, we obtain data about its performance considering certain parameters such as eviction frequency and bucket size. These contributions are useful in extending the C-ORAM algorithm. In the future, we plan to use our discoveries to further optimize C-ORAM and advance the Oblivious RAM algorithm closer to a usable product for users and businesses.
+\section{Conclusions and Future Work}
+In this work, after a study of previous ORAMs, we discuss and analyze C-ORAM, the latest development in constant-bandwidth Oblivious RAM. Using our simulation of C-ORAM's eviction process, we obtain data about the performance of the algorithm. Our experimental results allow us to find optimizations to C-ORAM, especially regarding eviction frequency and bucket size. We suggest various optimizations and also offer a security explanation to improve upon oblivious merging, which is a key component of C-ORAM.  These contributions are useful for improving the C-ORAM algorithm. In the future, we plan to use our findings to further advance the Oblivious RAM algorithm closer to a usable product for users.
 
 
 \bibliographystyle{abbrv}
