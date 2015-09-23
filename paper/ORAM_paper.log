@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  22 SEP 2015 20:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  22 SEP 2015 21:32
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -252,11 +252,11 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 49.
  [4]
-<ringaccess1.png, id=19, 439.6425pt x 296.10625pt>
+<ringaccess1.png, id=19, 583.17876pt x 390.45876pt>
 File: ringaccess1.png Graphic file (type png)
  <use ringaccess1.png>
 Package pdftex.def Info: ringaccess1.png used on input line 55.
-(pdftex.def)             Requested size: 397.485pt x 267.7221pt.
+(pdftex.def)             Requested size: 397.485pt x 266.13402pt.
 
 [5 <./ringaccess1.png>] <rlo.png, id=24, 790.955pt x 203.76125pt>
 File: rlo.png Graphic file (type png)
@@ -278,30 +278,31 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 File: merge.png Graphic file (type png)
 
 <use merge.png>
-Package pdftex.def Info: merge.png used on input line 114.
+Package pdftex.def Info: merge.png used on input line 113.
 (pdftex.def)             Requested size: 397.485pt x 108.64072pt.
  [12 <./merge.png>]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 125.
- [13]
-<runtimegraph.png, id=55, 609.27625pt x 376.40625pt>
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 124.
+
+<runtimegraph.png, id=51, 609.27625pt x 376.40625pt>
 File: runtimegraph.png Graphic file (type png)
  <use runtimegraph.png>
-Package pdftex.def Info: runtimegraph.png used on input line 129.
+Package pdftex.def Info: runtimegraph.png used on input line 128.
 (pdftex.def)             Requested size: 397.485pt x 245.56862pt.
 
-[14 <./runtimegraph.png>] <overflowgraph.png, id=60, 594.0839pt x 438.51967pt>
+[13] [14 <./runtimegraph.png>]
+<overflowgraph.png, id=60, 594.0839pt x 438.51967pt>
 File: overflowgraph.png Graphic file (type png)
-
-<use overflowgraph.png>
-Package pdftex.def Info: overflowgraph.png used on input line 140.
+ <use overflowgraph.png>
+Package pdftex.def Info: overflowgraph.png used on input line 139.
 (pdftex.def)             Requested size: 397.485pt x 293.40517pt.
- [15 <./overflowgraph.png>]
+
+[15 <./overflowgraph.png>]
 <evictionfreqgraph.png, id=66, 769.89673pt x 494.3268pt>
 File: evictionfreqgraph.png Graphic file (type png)
 
 <use evictionfreqgraph.png>
-Package pdftex.def Info: evictionfreqgraph.png used on input line 151.
+Package pdftex.def Info: evictionfreqgraph.png used on input line 150.
 (pdftex.def)             Requested size: 397.485pt x 255.2185pt.
  [16 <./evictionfreqgraph.png>] (./ORAM_paper.bbl
 [17] [18]) [19] (./ORAM_paper.aux) ) 
@@ -322,7 +323,7 @@ ts/cm/cmr12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts
 /cmsy10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmb8a.pf
 b></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/lo
 cal/texlive/2014/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on ORAM_paper.pdf (19 pages, 365667 bytes).
+Output written on ORAM_paper.pdf (19 pages, 372723 bytes).
 PDF statistics:
  109 PDF objects out of 1000 (max. 8388607)
  70 compressed objects within 1 object stream

@@ -15,22 +15,23 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Onion ORAM}{6}}
 \citation{damgard}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Onion ORAM Eviction}{7}}
+\citation{C-ORAM}
 \@writefile{toc}{\contentsline {section}{\numberline {3}C-ORAM}{8}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Accesses}{8}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Evictions}{9}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Shows the eviction pattern down a particular path in C-ORAM. Although all the data being pushed down to children buckets by parent buckets are identical, noisy blocks on the eviction path are relevant data to their sibling buckets, and vice versa.}}{10}}
 \newlabel{fig:c-evict}{{3}{10}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Oblivious Mergings}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Oblivious Merging}{10}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Our Contributions}{11}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Oblivious Merging Security Explanation}{11}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The right bucket permuted so ``real" data blocks (in black) are lined up with $E (0)$ blocks (in white) and noisy blocks (grey) are lined up with other noisy blocks. Thus, merging the two blocks occurs without the loss of real data blocks while keeping the number of noisy blocks low}}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The right bucket permuted so ``real" data blocks (in black) are lined up with $E (0)$ blocks (in white) and noisy blocks (grey) are lined up with other noisy blocks. Thus, merging the two blocks occurs without the loss of real data blocks while keeping the number of noisy blocks low.}}{12}}
 \newlabel{fig:merge}{{4}{12}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Single-bucket permutation}{12}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Experimental Results}{13}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}Runtime}{13}}
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Evaluation of runtime of program based on accesses to the tree}}{14}}
 \newlabel{fig:runtimegraph}{{5}{14}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.2}Overflow and Stability Considering Bucket Sizes}{15}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.2}Overflow and Stability Considering Bucket Sizes}{14}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Evaluation of overflow of tree when adding blocks without removal}}{15}}
 \newlabel{fig:overflowgraph}{{6}{15}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.3}Eviction Frequency}{16}}
