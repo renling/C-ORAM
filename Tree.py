@@ -61,7 +61,8 @@ class Tree:
         return
     
     def merge(self, bucket1, bucket2): #aligns buckets pseudo-randomly for merging and merges them
-        
+        #print('B1: ' + str(bucket1))
+        #print('B2: ' + str(bucket2))
         #Assumes that both buckets are pseudo-random
         
         zeroes1 = []
@@ -113,6 +114,8 @@ class Tree:
             bucket1[r2map[i]] = real2[i]
         for i in range(len(n2map)):
             bucket1[n2map[i]] = -1
+        
+        #print('Merged: ' + str(bucket1))
         
         return bucket1
 
@@ -228,6 +231,7 @@ class Tree:
         for i in range(self._z):
             if self._buckets[bucketID - 1][i] == -1:
                 self._buckets[bucketID - 1][i] = 0
+                break #only clean one
         
     
     def getPathNodes(self, leaf):
@@ -259,7 +263,7 @@ class Tree:
         
         for i in range(self._z):
             if self._buckets[bucketID][i] >= 1:
-                self._buckets[bucketID][i] = 0
+                self._buckets[bucketID][i] = -1
                 removed = True
                 break
             

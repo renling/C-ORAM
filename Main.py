@@ -163,10 +163,10 @@ def timeEvict():
         print("%.2f" % (timetaken/10))
 
 def testRate(freq): #freq is an integer (A)
-    l = 10
+    l = 1
     
-    ORAMsize = (1 << l) - 1
-    z = 1000
+    ORAMsize = (1 << 10) - 1
+    z = 300
     
     t = Tree(ORAMsize, z)
     
@@ -174,19 +174,24 @@ def testRate(freq): #freq is an integer (A)
     
     leaves = t._leaves
     
-    
-    for i in range(int(500/l)):
-        input = random.sample(leaves, exp)
+    '''
+    for i in range(int(5/l)):
+        input = random.sample(leaves, l)
+        print('Evicting: ' + str(input))
         t.evictAll(input)
+    '''
     timetaken = 0
     
     
     for i in range(10):
         t = Tree(ORAMsize, z)
         
-        for i in range(int(500/l)):
-            input = random.sample(leaves, exp)
+        for i in range(100):
+            input = random.sample(leaves, 1)
+            #print('Evicting: ' + str(input))
             t.evictAll(input)
+        
+        print 'setup done'
         
         start = time.clock()
             
@@ -233,7 +238,7 @@ def testOverflow():
     ORAMsize = (1 << 10) - 1
     z = 1000
     t = Tree(ORAMsize, z)
-    exp = 100
+    exp = 500
     
     
     leaves = t._leaves
@@ -246,5 +251,5 @@ def testOverflow():
             print(str(counter) + " evictions of " + str(exp) + " blocks completed")
 #testMerge(10000)
 #timeEvict()
-testRate(40)
+testRate(1)
 #testOverflow()
