@@ -191,7 +191,7 @@ def testRate(freq): #freq is an integer (A)
             #print('Evicting: ' + str(input))
             t.evictAll(input)
         
-        print 'setup done'
+        print('setup done')
         
         start = time.clock()
             
@@ -249,7 +249,35 @@ def testOverflow():
             t.evictAll(input)
             counter = counter + 1
             print(str(counter) + " evictions of " + str(exp) + " blocks completed")
+
+
+def testCORAM():
+	ORAMsize = (1 << 8) - 1;
+	z = 1000;
+	t = Tree(ORAMsize, z);
+	
+	N = z * ORAMsize / 10;
+	A = 100;
+	
+	for k in range(int(N/A)):
+		root = [t.randomLeaf() for i in range(A)]
+		t.evictAll(root)
+	
+	counter = 0
+	while True:
+		count = 0;	
+		for i in range(A):
+			count += t.readBlock(t.randomLeaf())
+
+		root = [t.randomLeaf() for i in range(count)]
+		
+		t.evictAll(root)
+		counter = counter + 1
+		if (counter % 100 == 0):
+			print(counter)
+			
 #testMerge(10000)
 #timeEvict()
-testRate(1)
+#testRate(1)
 #testOverflow()
+testCORAM()

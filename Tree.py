@@ -1,6 +1,7 @@
 #Tree and associated methods
 #dummy = 0, noisy = -1, real = 1
 
+import time
 import math
 import random
 
@@ -65,36 +66,42 @@ class Tree:
         #print('B2: ' + str(bucket2))
         #Assumes that both buckets are pseudo-random
         
+        for block2 in bucket2: # insert real and noisy
+            if (block2 != 0): #noisy or real
+                if block2 == -1 and -1 in bucket1: # noisy aligns with noisy first			
+                    bucket1[bucket1.index(-1)] = -1    
+                else:
+                    assert (0 in bucket1), "BUCKET OVERFLOW ERROR"  
+                    bucket1[bucket1.index(0)] = block2  	
+   								
+        return bucket1
+				
         zeroes1 = []
         noisys1 = []
         real2 = []
-        zCount1 = 0
-        nCount1 = 0
-        rCount2 = 0
-        nCount2 = 0
-        
+		
+        zCount1 = bucket1.count(0)
+        nCount1 = bucket1.count(-1)
+        nCount2 = bucket2.count(-1)
+        rCount2 = 0		
+		
         for i in range(len(bucket1)): #gathers metadata
             
             if(bucket1[i] == 0): #dummy
                 zeroes1.append(i)
-                zCount1 += 1
                 
             if(bucket1[i] == -1): #noisy
                 noisys1.append(i)
-                nCount1 += 1
                 
             if(bucket2[i] >= 1): #real
                 real2.append(bucket2[i])
                 rCount2 += 1
-            
-            if(bucket2[i] == -1): #noisy
-                nCount2 += 1
-        
+                    		
         assert ((rCount2 + nCount2 <= nCount1 + zCount1) and (rCount2 <= zCount1)), "BUCKET OVERFLOW ERROR"        
-                
+        					
         #assign reals spaces among zeroes
         #assign noisys spaces among noisys (and zeroes if insufficient space)
-        
+                			
         r2map = self.AssignFromList(rCount2, zeroes1) #this and below 2 lines handle output from assignment function
         #print('r2map is' + str(r2map))
         zeroes1 = r2map[1] #now only the empty locations
@@ -108,22 +115,14 @@ class Tree:
             
         else:
             n2map = self.AssignFromList(nCount2, noisys1)[0]
-        
-
+        	
         for i in range(len(r2map)): #assign reals
             bucket1[r2map[i]] = real2[i]
         for i in range(len(n2map)):
             bucket1[n2map[i]] = -1
         
-        #print('Merged: ' + str(bucket1))
-        
+        #print('Merged: ' + str(bucket1))            
         return bucket1
-
-    def mergeNodes(self, node1, node2): #merge functions using the TreeNode representation
-        newnode = self.merge(node1, node2)
-        #update/account for noisy blocks
-        
-        return newnode
 
          
     # def eviction(self,input): #initial
@@ -139,9 +138,6 @@ class Tree:
     #         for j in range(len(curBucket)):
     #             curBucket[j]=0
 
-
-
-      
     #     return
 
 
@@ -153,12 +149,11 @@ class Tree:
         #print(str(locs) + ',  ' + str(objnum))
         
         
-        rands = random.sample(xrange(0, len(locs)), objnum)
+        rands = random.sample(range(0, len(locs)), objnum)
         #print( 'rands are ' + str(rands))
         mapping = []
         
-        for i in range(len(rands)):
-            
+        for i in range(len(rands)):            
             mapping.append(locs[rands[i]])
         
         for i in range(len(mapping)):
@@ -184,16 +179,15 @@ class Tree:
         
         kids = self.children(bucketID)
         
-        kidContents = [self.mergeNodes(self.getBucket(kids[0]),self.getBucket(bucketID)), 
-                self.mergeNodes(self.getBucket(kids[1]),self.getBucket(bucketID))]
-        
+        kidContents = [self.merge(self.getBucket(kids[0]),self.getBucket(bucketID)), 
+                self.merge(self.getBucket(kids[1]),self.getBucket(bucketID))]
+        					
         self.clearBucket(bucketID)
-        
+		
         kidContents[0] = self.makeNoisy(kidContents[0], kids[0])
-        kidContents[1] = self.makeNoisy(kidContents[1], kids[1])
-        
-        
+        kidContents[1] = self.makeNoisy(kidContents[1], kids[1])      
         #print(kidContents)
+		
         self.setBucket(kids[0], kidContents[0])
         self.setBucket(kids[1], kidContents[1])
         
@@ -210,20 +204,16 @@ class Tree:
         
         return bucket
         
-    def evictAll(self, input):
+    def evictAll(self, input):	
         input = input + [0 for i in range(self._z - len(input))]
-
         self.setBucket(1, input)
         
-        rlo = self.RLOLeaf()
-        
-        evictees = self.getPathNodes(rlo)
-        
-        for node in evictees:
+        rlo = self.RLOLeaf()       
+             		
+        for node in self.getPathNodes(rlo):
             self.evictToKids(node)
-        
+         		
         self.cleanBucket(rlo)
-        
         #clean up leaf
         return
     
@@ -231,9 +221,15 @@ class Tree:
         for i in range(self._z):
             if self._buckets[bucketID - 1][i] == -1:
                 self._buckets[bucketID - 1][i] = 0
-                break #only clean one
-        
+                #break #only clean one
     
+    def readBlock(self, leaf):
+        for bucketID in [leaf] + self.getPathNodes(leaf):
+            if leaf in self._buckets[bucketID-1]:
+                self._buckets[bucketID-1].index(leaf) == 0
+                return 1				
+        return 0				
+				
     def getPathNodes(self, leaf):
         result = []
         leaf = leaf >> 1 #the leaf itself is NOT in the returned list
@@ -254,23 +250,7 @@ class Tree:
             return self.levelNumber(leaf2)
             leaf2 = leaf2>>1
         if leaf1==leaf2:
-            return self.levelNumber(leaf1);
-        
-    def removeRand(self):
-        bucketID = random.randint(0, self._size - 1)
-        
-        removed = False
-        
-        for i in range(self._z):
-            if self._buckets[bucketID][i] >= 1:
-                self._buckets[bucketID][i] = -1
-                removed = True
-                break
-            
-        if not removed:
-            self.removeRand()
-        
-        
+            return self.levelNumber(leaf1); 
         
         
         
