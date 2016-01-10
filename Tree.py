@@ -1,5 +1,5 @@
 #Tree and associated methods
-#dummy = 0, noisy = -1, real = 1
+#dummy = 0, noisy = -1, real = leafID
 
 import time
 import math
@@ -24,29 +24,24 @@ class Tree:
             #leaf locations
     
     def RLOLeaf(self): #returns next Reverse Lexicographic Leaf
-
         binary = (bin(self._numAccesses)[2:]).zfill(self._height - 1) 
         #print (str(binary))
-
  
         binary = binary[::-1]
         self._numAccesses += 1
         self._numAccesses = (self._numAccesses)%(int(math.pow(2,self._height - 1)))
         resp = self._size -(int(binary,2))
-        #print ("will return %d" %resp)
+        #print ("RLO leaf =  %d" %resp)
         return resp
     
     def randomLeaf(self):
         return random.randint(int(self._size / 2) + 1, self._size)
     
-    def getPathNodes(self, leaf): #returns all buckets along the path to a specified leaf
-        
-        result = []
-        
+    def getPathNodes(self, leaf): #returns all buckets along the path to a specified leaf        
+        result = []       
         while (leaf > 0):
             result.insert(0 , leaf)
-            leaf = leaf >> 1
-            
+            leaf = leaf >> 1            
         return result
     
     def getBucket(self, bucketID): #subtracts 1 because arrays go up from 0
@@ -54,28 +49,34 @@ class Tree:
     
     def clearBucket(self, bucketID):
         self._buckets[bucketID - 1] = [0 for i in range(self._z)]
-        return
         
     def setBucket(self, bucketID, contents):
         self._buckets[bucketID - 1] = contents
-        self._buckets[bucketID - 1] += [0 for i in range(self._z - len(self._buckets[bucketID - 1]))]
+
+    def copyBucket(self, dst, src):
+        self._buckets[dst - 1] = [self._buckets[src - 1][i] for i in range(self._z)]
+		
+    def merge(self, child, parent):
+        parentBucket = self.getBucket(parent)
+        childBucket = self.getBucket(child)		
+        for block in parentBucket: # insert real and noisy
+            if (block == 0): #noisy or real
+                continue
+            if block == -1:
+                block = -2	# tmp use of -2 to mark used noisy			
+            if block == -2 and -1 in childBucket: # noisy aligns with noisy first			
+                childBucket[childBucket.index(-1)] = -2    
+            else:
+                if (0 not in childBucket):
+                    print("BUCKET OVERFLOW ERROR at level " + str(self._level)) 
+                childBucket[childBucket.index(0)] = block
+        for i in range(len(childBucket)): # insert real and noisy
+            if childBucket[i] == -2:
+                childBucket[i] = -1				
         return
-    
-    def merge(self, bucket1, bucket2): #aligns buckets pseudo-randomly for merging and merges them
-        #print('B1: ' + str(bucket1))
-        #print('B2: ' + str(bucket2))
-        #Assumes that both buckets are pseudo-random
-        
-        for block2 in bucket2: # insert real and noisy
-            if (block2 != 0): #noisy or real
-                if block2 == -1 and -1 in bucket1: # noisy aligns with noisy first			
-                    bucket1[bucket1.index(-1)] = -1    
-                else:
-                    assert (0 in bucket1), "BUCKET OVERFLOW ERROR"  
-                    bucket1[bucket1.index(0)] = block2  	
-   								
-        return bucket1
-				
+ 
+        # Below is more detailed simulation; assumes that both buckets are pseudo-random
+		
         zeroes1 = []
         noisys1 = []
         real2 = []
@@ -123,25 +124,7 @@ class Tree:
         
         #print('Merged: ' + str(bucket1))            
         return bucket1
-
-         
-    # def eviction(self,input): #initial
-    #     self.setBucket(1, input)
-    #     nextLeaf = RLOLeaf()
-    #     leaves=getPathNodes(nextLeaf)
-    #     for i in range(len(leaves)):
-
-    #         curBucket=leaves[i]
-    #         getBucket(2*(i+1))=merge(leaves[i],getBucket(2*(i+1)))
-    #         getBucket(2*(i+1)+1=merge(leaves[i],getBucket(2*(i+1)+1))
-
-    #         for j in range(len(curBucket)):
-    #             curBucket[j]=0
-
-    #     return
-
-
-            
+                   
     def AssignFromList(self, objnum, locs): #randomly assigns objects locations from specified list
         
         assert(objnum <= len(locs)), "Pigeon-hole Principle Violation"
@@ -163,95 +146,60 @@ class Tree:
         #print('mapping is ' + str(mapping))
         
         return [mapping, locs]
-    
-    def levelNumber(self, bucket):#returns the level a leaf is on (used in getMaxLevel)
-        #print bucket
-        a = int(math.log(bucket,2))
-
-        return a
-    
-    def children(self, bucketID): 
-        assert(self.levelNumber(bucketID) < self._height - 1), "Leaves have no children"
-        
-        return [2 * bucketID, 2 * bucketID + 1] #IDs of children
-    
-    def evictToKids(self, bucketID):
-        
-        kids = self.children(bucketID)
-        
-        kidContents = [self.merge(self.getBucket(kids[0]),self.getBucket(bucketID)), 
-                self.merge(self.getBucket(kids[1]),self.getBucket(bucketID))]
+   
+    def evictToKids(self, parent, child, sibling):        
+        #print(self.getBucket(parent))
+        #print(self.getBucket(child))		
+        #print(self.getBucket(sibling))
+		
+        # copy parent to sibling
+        self.copyBucket(sibling, parent)		
+        self.makeNoisy(sibling, sibling)
+		
+		# merge parent and child, after marking noise properly in parent
+        self.makeNoisy(parent, child)		
+        self.merge(child, parent)			
         					
-        self.clearBucket(bucketID)
-		
-        kidContents[0] = self.makeNoisy(kidContents[0], kids[0])
-        kidContents[1] = self.makeNoisy(kidContents[1], kids[1])      
-        #print(kidContents)
-		
-        self.setBucket(kids[0], kidContents[0])
-        self.setBucket(kids[1], kidContents[1])
-        
+        #print(self.getBucket(parent))
+        #print(self.getBucket(child))		
+        #print(self.getBucket(sibling))
         return
     
-
-    def makeNoisy(self, bucket, bucketID):
+    def makeNoisy(self, src, target):
+        bucket = self.getBucket(src)	    
         for i in range(len(bucket)):
-            if bucket[i] >= 1:
-                path = self.getPathNodes(bucket[i]) + [bucket[i]]
-                #check if bucket path + leaf contains bucketID
-                if not ((bucketID) in path):
-                    bucket[i] = -1 #now it's noisy!
-        
-        return bucket
+            if bucket[i] >= 1 and (target not in self.getPathNodes(bucket[i])):      #check if path contains bucketID       
+                    bucket[i] = -1 #now it's noisy!					
         
     def evictAll(self, input):	
         input = input + [0 for i in range(self._z - len(input))]
         self.setBucket(1, input)
         
         rlo = self.RLOLeaf()       
-             		
-        for node in self.getPathNodes(rlo):
-            self.evictToKids(node)
+             	
+        self._level	= 0;	
+        path = self.getPathNodes(rlo)
+        for self._level in range(len(path)-1):
+            parent = path[self._level]
+            child = path[self._level+1]
+            sibling = child + 1 - 2 * (child % 2)
+            self.evictToKids(parent, child, sibling)
          		
-        self.cleanBucket(rlo)
-        #clean up leaf
+        self.cleanBucket(rlo)         #clean up leaf
         return
     
     def cleanBucket(self, bucketID):
         for i in range(self._z):
             if self._buckets[bucketID - 1][i] == -1:
                 self._buckets[bucketID - 1][i] = 0
-                #break #only clean one
+                break #only clean one
     
     def readBlock(self, leaf):
-        for bucketID in [leaf] + self.getPathNodes(leaf):
+        for bucketID in reversed(self.getPathNodes(leaf)):
             if leaf in self._buckets[bucketID-1]:
                 self._buckets[bucketID-1].index(leaf) == 0
                 return 1				
         return 0				
-				
-    def getPathNodes(self, leaf):
-        result = []
-        leaf = leaf >> 1 #the leaf itself is NOT in the returned list
-        while (leaf>0):
-            result.insert(0,leaf)
-            leaf = leaf>>1
-        return result
-    
-    def getMaxLevel(self, leaf1, leaf2):
-    #print (str(leaf1) + " and " + str(leaf2))
-        if leaf1 == 1 or leaf2 == 1:
-            return 0
-        
-        if self.levelNumber(leaf1) > self.levelNumber(leaf2):
-            return self.levelNumber(leaf1)
-            leaf1 = leaf1 >> 1
-        elif self.levelNumber(leaf1) < self.levelNumber(leaf2):
-            return self.levelNumber(leaf2)
-            leaf2 = leaf2>>1
-        if leaf1==leaf2:
-            return self.levelNumber(leaf1); 
-        
         
         
         

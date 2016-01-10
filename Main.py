@@ -19,6 +19,7 @@ def testRLO(): #tests that RLO is working by generating all RLO values
     leaves.sort()
     
     print(leaves)
+	
 def counter():
     Tree.seed = Tree.seed + 1
     return Tree.seed
@@ -253,11 +254,11 @@ def testOverflow():
 
 def testCORAM():
 	ORAMsize = (1 << 8) - 1;
-	z = 1000;
+	z = 600;
 	t = Tree(ORAMsize, z);
-	
-	N = z * ORAMsize / 10;
-	A = 100;
+
+	A = 100;	
+	N = A * ORAMsize / 4;
 	
 	for k in range(int(N/A)):
 		root = [t.randomLeaf() for i in range(A)]
