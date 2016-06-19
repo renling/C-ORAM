@@ -259,6 +259,8 @@ def testCORAM():
 
 	A = 100;	
 	N = A * ORAMsize / 4;
+
+	print(z, A)
 	
 	for k in range(int(N/A)):
 		root = [t.randomLeaf() for i in range(A)]
